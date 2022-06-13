@@ -1,38 +1,35 @@
 package Class;
 
 public class Clientes {
-    int ID_CLiente;
-    String nomeCLiente;
+    int ID_Cliente;
+    String nomeCliente;
     int CPF;
     String clienteLogin;
 
     public Clientes() {
-        
-    }    
-    
-    public Clientes(int ID_CLiente, String nomeCLiente, int CPF, String clienteLogin) {
-        this.ID_CLiente = ID_CLiente;
-        this.nomeCLiente = nomeCLiente;
+    }
+
+    public Clientes(int ID_Cliente, String nomeCliente, int CPF, String clienteLogin) {
+        this.ID_Cliente = ID_Cliente;
+        this.nomeCliente = nomeCliente;
         this.CPF = CPF;
         this.clienteLogin = clienteLogin;
     }
-    
-    
 
-    public int getID_CLiente() {
-        return ID_CLiente;
+    public int getID_Cliente() {
+        return ID_Cliente;
     }
 
-    public void setID_CLiente(int ID_CLiente) {
-        this.ID_CLiente = ID_CLiente;
+    public void setID_Cliente(int ID_Cliente) {
+        this.ID_Cliente = ID_Cliente;
     }
 
-    public String getNomeCLiente() {
-        return nomeCLiente;
+    public String getNomeCliente() {
+        return nomeCliente;
     }
 
-    public void setNomeCLiente(String nomeCLiente) {
-        this.nomeCLiente = nomeCLiente;
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
     }
 
     public int getCPF() {

@@ -1,15 +1,14 @@
 package Class;
 
-public class Games {
+public class Jogos {
     int ID_Jogo;
     String nomeJogo;
     String genero;
 
-    public Games() {
-        
+    public Jogos() {
     }
 
-    public Games(int ID_Jogo, String nomeJogo, String genero) {
+    public Jogos(int ID_Jogo, String nomeJogo, String genero) {
         this.ID_Jogo = ID_Jogo;
         this.nomeJogo = nomeJogo;
         this.genero = genero;
@@ -38,7 +37,6 @@ public class Games {
     public void setGenero(String genero) {
         this.genero = genero;
     }
-    
+
     
 }
-
