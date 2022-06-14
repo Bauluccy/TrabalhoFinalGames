@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.Normalizer.Form;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -43,8 +44,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabela = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        botaoAdicionar = new javax.swing.JButton();
+        botaoSair = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
 
@@ -57,14 +58,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         Tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Data", "Hora", "Cliente", "Game", "Qnt", "Pagamento"
+                "Data", "Hora", "Cliente", "Game", "Qnt", "Pagamento", "Valor Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -73,9 +74,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Tabela);
 
-        jButton1.setText("Adicionar");
+        botaoAdicionar.setText("Adicionar");
+        botaoAdicionar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoAdicionarMouseClicked(evt);
+            }
+        });
 
-        jButton2.setText("Sair");
+        botaoSair.setText("Sair");
+        botaoSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoSairMouseClicked(evt);
+            }
+        });
 
         jMenu1.setText("Opções");
         jMenuBar1.add(jMenu1);
@@ -89,9 +100,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(442, 442, 442)
-                .addComponent(jButton1)
+                .addComponent(botaoAdicionar)
                 .addGap(12, 12, 12)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(botaoSair, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,8 +110,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)))
+                    .addComponent(botaoAdicionar)
+                    .addComponent(botaoSair)))
         );
 
         pack();
@@ -154,6 +165,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_formWindowOpened
 
+    private void botaoSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSairMouseClicked
+        dispose();
+    }//GEN-LAST:event_botaoSairMouseClicked
+
+    private void botaoAdicionarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoAdicionarMouseClicked
+        Joins joinFormCadastro = new Join();
+        nomeVariavel.setVisible(true);
+    }//GEN-LAST:event_botaoAdicionarMouseClicked
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -186,8 +206,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Tabela;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton botaoAdicionar;
+    private javax.swing.JButton botaoSair;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
