@@ -39,8 +39,9 @@ public class BDJogos {
                 int idJogos = rs.getInt("ID_Jogo");
                 String tituloJogo = rs.getString("titulo");
                 String generoJogo = rs.getString("genero");
+                double valorUnidade = rs.getDouble("valorUnidade");
 
-                Lista.add(new Jogos(idJogos, tituloJogo, generoJogo));
+                Lista.add(new Jogos(idJogos, tituloJogo, generoJogo, valorUnidade));
             }
 
         } catch (SQLException sqle) {
@@ -64,12 +65,13 @@ public class BDJogos {
             JOptionPane.showMessageDialog(null, "O campo jogos não pode ser nulo.");
         }
         try {
-            String SQL = "INSERT INTO jogos (titulo, genero) values (?,?)";
+            String SQL = "INSERT INTO jogos (titulo, genero, valorUnidade) values (?,?,?)";
 
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
             ps.setString(1, jogos.getNomeJogo());
             ps.setString(2, jogos.getGenero());
+            ps.setDouble(3,jogos.getValor());
             ps.executeUpdate();
 
         } catch (SQLException sqle) {
@@ -89,12 +91,14 @@ public class BDJogos {
         }
 
         try {
-            String SQL = "UPDATE jogos set titulo=?, genero=? WHERE ID_Jogo=?";
+            String SQL = "UPDATE jogos set titulo=?, genero=?, valorUnidade WHERE ID_Jogo=?";
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
             ps.setString(1, jogos.getNomeJogo());
             ps.setString(2, jogos.getNomeJogo());
-            ps.setInt(3, jogos.getID_Jogo());
+            ps.setDouble(3, jogos.getValor());
+            ps.setInt(4, jogos.getID_Jogo());
+            
             ps.executeUpdate();
 
         } catch (SQLException sqle) {

@@ -4,14 +4,16 @@ public class Jogos {
     int ID_Jogo;
     String nomeJogo;
     String genero;
+    double valor;
 
     public Jogos() {
     }
 
-    public Jogos(int ID_Jogo, String nomeJogo, String genero) {
+    public Jogos(int ID_Jogo, String nomeJogo, String genero, double valor) {
         this.ID_Jogo = ID_Jogo;
         this.nomeJogo = nomeJogo;
         this.genero = genero;
+        this.valor = valor;
     }
 
     public int getID_Jogo() {
@@ -36,6 +38,14 @@ public class Jogos {
 
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 
     

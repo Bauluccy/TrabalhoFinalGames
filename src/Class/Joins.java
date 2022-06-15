@@ -14,23 +14,25 @@ public class Joins {
     Time hora;
     int quantidade;
     String tipoPagamento;
+    double valorTotal;
 
     public Joins() {
         
     }
 
-    public Joins(String nomeCliente, String nomeJogo, Date data, Time hora, int quantidade, String tipoPagamento) {
+    public Joins(String nomeCliente, String nomeJogo, Date data, Time hora, int quantidade, String tipoPagamento, double valorTotal) {
         this.nomeCliente = nomeCliente;
         this.nomeJogo = nomeJogo;
         this.data = data;
         this.hora = hora;
         this.quantidade = quantidade;
         this.tipoPagamento = tipoPagamento;
+        this.valorTotal = valorTotal;
     }
     
     
 
-    public Joins(int ID_Historico, int ID_cliente, int ID_jogo, String nomeCliente, String nomeJogo, Date data, Time hora, int quantidade, String tipoPagamento) {
+    public Joins(int ID_Historico, int ID_cliente, int ID_jogo, String nomeCliente, String nomeJogo, Date data, Time hora, int quantidade, String tipoPagamento, double valorTotal) {
         this.ID_Historico = ID_Historico;
         this.ID_cliente = ID_cliente;
         this.ID_jogo = ID_jogo;
@@ -40,6 +42,7 @@ public class Joins {
         this.hora = hora;
         this.quantidade = quantidade;
         this.tipoPagamento = tipoPagamento;
+        this.valorTotal = valorTotal;
     }
     
     
@@ -118,6 +121,14 @@ public class Joins {
 
     public void setHora(Time hora) {
         this.hora = hora;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
     }
     
     

@@ -47,7 +47,8 @@ public class BDHistorico {
                 DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
                 Time hora = rs.getTime("hora");
                 String tipoPagamento = rs.getString("tipoPagamento");
-                agendaHistoricos.add(new HistoricoDeCompras(ID_historico,id_cliente,id_jogo,quantidade,data,hora,tipoPagamento));
+                double valorTotal = rs.getDouble("valorTotal");
+                agendaHistoricos.add(new HistoricoDeCompras(ID_historico,id_cliente,id_jogo,quantidade,data,hora,tipoPagamento,valorTotal));
             }
 
         } catch (SQLException sqle) {
@@ -70,8 +71,8 @@ public class BDHistorico {
             JOptionPane.showMessageDialog(null, "O objeto historico não pode ser nulo.");
         }
         try {
-            String SQL = "INSERT INTO historico (id_cliente, id_jogo, data, hora, quantidade, tipoPagamento) "
-                    + "values (?,?,?,?,?,?)";
+            String SQL = "INSERT INTO historico (id_cliente, id_jogo, data, hora, quantidade, tipoPagamento, valorTotal) "
+                    + "values (?,?,?,?,?,?,?)";
 
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
@@ -85,6 +86,7 @@ public class BDHistorico {
             
             ps.setInt(5, historico.getQuantidade());
             ps.setString(6, historico.getTipoPagamento());
+            ps.setDouble(7, historico.getValorTotal());
             ps.executeUpdate();
 
         } catch (SQLException sqle) {
@@ -103,7 +105,7 @@ public class BDHistorico {
             JOptionPane.showMessageDialog(null, "O campo historico não pode ser nulo.");
         }
         try {
-            String SQL = "UPDATE historico set id_cliente=?, id_jogo=?, data=?, hora=?, quantidade=?, tipoPagamento=?";
+            String SQL = "UPDATE historico set id_cliente=?, id_jogo=?, data=?, hora=?, quantidade=?, tipoPagamento=?, valorTotal=?";
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
             ps.setInt(1, historico.getID_Cliente());
@@ -116,6 +118,7 @@ public class BDHistorico {
             
             ps.setInt(5, historico.getQuantidade());
             ps.setString(6, historico.getTipoPagamento());
+            ps.setDouble(7, historico.getValorTotal());
             ps.executeUpdate();
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Erro ao editar historico " + sqle);

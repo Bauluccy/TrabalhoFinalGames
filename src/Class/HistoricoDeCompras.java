@@ -11,12 +11,13 @@ public class HistoricoDeCompras {
     Date data;
     Time hora;
     String tipoPagamento;
+    double valorTotal;
 
     public HistoricoDeCompras() {
         
     }
 
-    public HistoricoDeCompras(int ID_Historico, int ID_Cliente, int ID_Jogo, int quantidade, Date data, Time hora, String tipoPagamento) {
+    public HistoricoDeCompras(int ID_Historico, int ID_Cliente, int ID_Jogo, int quantidade, Date data, Time hora, String tipoPagamento, double valorTotal) {
         this.ID_Historico = ID_Historico;
         this.ID_Cliente = ID_Cliente;
         this.ID_Jogo = ID_Jogo;
@@ -24,6 +25,7 @@ public class HistoricoDeCompras {
         this.data = data;
         this.hora = hora;
         this.tipoPagamento = tipoPagamento;
+        this.valorTotal = valorTotal;
     }
 
     public int getID_Historico() {
@@ -80,6 +82,14 @@ public class HistoricoDeCompras {
 
     public void setTipoPagamento(String tipoPagamento) {
         this.tipoPagamento = tipoPagamento;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
     }
     
     

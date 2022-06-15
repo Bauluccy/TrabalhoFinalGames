@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -34,6 +35,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Tabela.getColumnModel().getColumn(3).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(4).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(5).setCellRenderer(centralizado);
+        Tabela.getColumnModel().getColumn(6).setCellRenderer(centralizado);
+        
+        
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
     
     
@@ -124,6 +129,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Date data;
         Time hora;
         int quantidade;
+        double valorTotal;
         
         
         if(Tabela.getRowCount() > 0){
@@ -157,9 +163,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
             String quantidadeString = Integer.toString(quantidade);
             
             tipoPagamento = historicoJoin.get(i).getTipoPagamento();
+            valorTotal = historicoJoin.get(i).getValorTotal();
+            String valorTotalString = Double.toString(valorTotal);
             
+            table.addRow(new String[]{dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
             
-            table.addRow(new String[]{dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento});
         }
         
         
@@ -170,8 +178,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoSairMouseClicked
 
     private void botaoAdicionarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoAdicionarMouseClicked
-        Joins joinFormCadastro = new Join();
-        nomeVariavel.setVisible(true);
+        CadastrarHistorico formCadastro = new CadastrarHistorico();
+        formCadastro.setVisible(true);
     }//GEN-LAST:event_botaoAdicionarMouseClicked
 
     public static void main(String args[]) {
