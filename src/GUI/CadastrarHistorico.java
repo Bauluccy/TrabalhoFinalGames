@@ -212,7 +212,6 @@ public class CadastrarHistorico extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         dispose();
-        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
