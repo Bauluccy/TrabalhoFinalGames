@@ -60,6 +60,33 @@ public class BDHistorico {
         return agendaHistoricos;
     }
     
+    public ArrayList listarPagamentos() {
+        PreparedStatement ps = null;
+        Connection connL = null;
+        ResultSet rs = null;
+        ArrayList agendaHistoricos = new ArrayList();
+
+        try {
+            String SQL = "SELECT tipoPagamento FROM historico GROUP BY historico.tipoPagamento";
+            connL = this.conn;
+
+            ps = connL.prepareStatement(SQL);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String tipoPagamento = rs.getString("tipoPagamento");
+                agendaHistoricos.add(new HistoricoDeCompras(tipoPagamento));
+            }
+
+        } catch (SQLException sqle) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar o histórico de compras " + sqle);
+        } finally {
+            Conexao.close(connL, ps);
+        }
+
+        return agendaHistoricos;
+    }
+    
     
     
     public void inserir(HistoricoDeCompras historico) {

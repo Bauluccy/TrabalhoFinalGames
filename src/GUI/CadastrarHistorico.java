@@ -1,15 +1,25 @@
 package GUI;
 
 import Class.Clientes;
+import Class.HistoricoDeCompras;
 import Class.Jogos;
+import Class.Joins;
 import Dados.BDClientes;
+import Dados.BDHistorico;
 import Dados.BDJogos;
+import Dados.BDJoins;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.MaskFormatter;
+import java.sql.Time;
 
 public class CadastrarHistorico extends javax.swing.JFrame {
-    
+    ArrayList<Joins> listaJoins = new ArrayList<Joins>();
     ArrayList<Clientes> listaCliente = new ArrayList<Clientes>();
     ArrayList<Jogos> listaJogos = new ArrayList<Jogos>();
+    ArrayList<HistoricoDeCompras> listaHistorico = new ArrayList<HistoricoDeCompras>();
 
     public CadastrarHistorico() {
         initComponents();
@@ -29,14 +39,13 @@ public class CadastrarHistorico extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         dateChooser = new datechooser.beans.DateChooserCombo();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
         jLabel5 = new javax.swing.JLabel();
         comboQnt = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        comboPagamento = new javax.swing.JComboBox<>();
+        botaoOk = new javax.swing.JButton();
+        botaoCancel = new javax.swing.JButton();
+        timePickerHora = new com.github.lgooddatepicker.components.TimePicker();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -74,22 +83,25 @@ public class CadastrarHistorico extends javax.swing.JFrame {
 
         jLabel4.setText("Hora");
 
-        jScrollPane2.setViewportView(jTextPane1);
-
         jLabel5.setText("Quantidade");
 
         comboQnt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Pagamento");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("OK");
+        botaoOk.setText("OK");
+        botaoOk.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoOkMouseClicked(evt);
+            }
+        });
 
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        botaoCancel.setText("Cancel");
+        botaoCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                botaoCancelActionPerformed(evt);
             }
         });
 
@@ -110,26 +122,27 @@ public class CadastrarHistorico extends javax.swing.JFrame {
                         .addComponent(comboJogo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoOk, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timePickerHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox4, 0, 138, Short.MAX_VALUE)))
+                        .addComponent(comboPagamento, 0, 169, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -148,19 +161,18 @@ public class CadastrarHistorico extends javax.swing.JFrame {
                         .addComponent(comboQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(comboJogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(comboJogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addComponent(timePickerHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(comboPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(botaoOk)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(botaoCancel)
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -178,6 +190,8 @@ public class CadastrarHistorico extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+        //START COMBOS
         //Carregar combo Clientes
         try {
             comboCliente.removeAllItems();
@@ -204,15 +218,91 @@ public class CadastrarHistorico extends javax.swing.JFrame {
             comboJogo.addItem(listaJogos.get(i).getNomeJogo());
         }
         
+        //Carregar combo Qquantidade
+        try {
+            comboQnt.removeAllItems();
+        } catch (Exception ex) {
+            System.out.println("Erro qualquer" + ex);
+        }
+
+        for (int i = 1; i < 11; i++) {
+            comboQnt.addItem(""+i);
+        }
+        
+        
+        //Carregar combo Pagamentos
+        try {
+            comboPagamento.removeAllItems();
+            BDHistorico BDH = new BDHistorico();
+            listaHistorico = BDH.listarPagamentos();
+            
+            
+            
+        } catch (Exception ex) {
+            System.out.println("Erro qualquer" + ex);
+        }
+        
+        
+        for (int i = 0; i < listaHistorico.size(); i++) {
+            comboPagamento.addItem(listaHistorico.get(i).getTipoPagamento());
+        }  
+        //END COMBOS//
+  
+        
         
         
         
         
     }//GEN-LAST:event_formWindowOpened
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void botaoCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelActionPerformed
         dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botaoCancelActionPerformed
+
+    private void botaoOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoOkMouseClicked
+            
+            
+            HistoricoDeCompras historico = new HistoricoDeCompras();
+            Jogos jogos = new Jogos();
+            BDHistorico BDH = new BDHistorico();
+        try{
+            
+            historico.setID_Cliente(comboCliente.getSelectedIndex()+1);
+            historico.setID_Jogo(comboJogo.getSelectedIndex()+1);
+            
+            Calendar dataSelecionada = dateChooser.getSelectedDate();
+            java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
+            historico.setData(dataSQL);
+            
+            
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            String horaSelecionada = timePickerHora.getText();
+                Time time = new Time(format.parse(horaSelecionada).getTime());
+                historico.setHora(time);
+            
+                
+            
+            
+            historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));
+            historico.setTipoPagamento(comboPagamento.getSelectedItem().toString());
+            
+//            for(int i = 0; i < arrayJogos.size(); i++)
+//            {
+//                arrayJogos.get(i).getValor();
+//            }
+            
+            double valorJogosTotal = listaJogos.get * historico.getQuantidade();
+            historico.setValorTotal(valorJogosTotal);
+                   
+            
+        }catch(Exception ex){
+            System.out.println("Erro ao inserir: " + ex);
+        }
+        
+        BDHistorico BDEXE = new BDHistorico();
+        BDEXE.inserir(historico);
+        
+    }//GEN-LAST:event_botaoOkMouseClicked
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -244,28 +334,16 @@ public class CadastrarHistorico extends javax.swing.JFrame {
         });
     }
     
-    public void CarregaComboCliente(){
-        try {
-            comboCliente.removeAllItems();
-            BDClientes BDC = new BDClientes();
-            listaCliente = BDC.listar();
-        } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
-        }
-
-        for (int i = 0; i < listaCliente.size(); i++) {
-            comboCliente.addItem(listaCliente.get(i).getNomeCliente());
-        }        
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoCancel;
+    private javax.swing.JButton botaoOk;
     private javax.swing.JComboBox<String> comboCliente;
     private javax.swing.JComboBox<String> comboJogo;
+    private javax.swing.JComboBox<String> comboPagamento;
     private javax.swing.JComboBox<String> comboQnt;
     private datechooser.beans.DateChooserCombo dateChooser;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -273,8 +351,7 @@ public class CadastrarHistorico extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextPane jTextPane1;
+    private com.github.lgooddatepicker.components.TimePicker timePickerHora;
     // End of variables declaration//GEN-END:variables
 }

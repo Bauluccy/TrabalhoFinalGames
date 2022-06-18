@@ -17,6 +17,10 @@ public class HistoricoDeCompras {
         
     }
 
+    public HistoricoDeCompras(String tipoPagamento) {
+        this.tipoPagamento = tipoPagamento;
+    }
+    
     public HistoricoDeCompras(int ID_Historico, int ID_Cliente, int ID_Jogo, int quantidade, Date data, Time hora, String tipoPagamento, double valorTotal) {
         this.ID_Historico = ID_Historico;
         this.ID_Cliente = ID_Cliente;
