@@ -1,5 +1,6 @@
-package GUI;
+package GUI.Jogos;
 
+import GUI.Historico.*;
 import Class.Clientes;
 import Class.HistoricoDeCompras;
 import Class.Jogos;
@@ -15,15 +16,15 @@ import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 import java.sql.Time;
 
-public class CadastrarHistorico extends javax.swing.JFrame {
+public class CadastrarJogos extends javax.swing.JFrame {
     ArrayList<Joins> listaJoins = new ArrayList<Joins>();
     ArrayList<Clientes> listaCliente = new ArrayList<Clientes>();
     ArrayList<Jogos> listaJogos = new ArrayList<Jogos>();
     ArrayList<HistoricoDeCompras> listaHistorico = new ArrayList<HistoricoDeCompras>();
 
-    public CadastrarHistorico() {
+    public CadastrarJogos() {
         initComponents();
-        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+//        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")
@@ -52,6 +53,18 @@ public class CadastrarHistorico extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -191,6 +204,103 @@ public class CadastrarHistorico extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         
+        carregarCombos();
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    private void botaoCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_botaoCancelActionPerformed
+
+    private void botaoOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoOkMouseClicked
+            
+            
+            HistoricoDeCompras historico = new HistoricoDeCompras();
+            Jogos jogos = new Jogos();
+            BDHistorico BDH = new BDHistorico();
+        try{
+            
+            historico.setID_Cliente(comboCliente.getSelectedIndex()+1);
+            historico.setID_Jogo(comboJogo.getSelectedIndex()+1);
+            
+            Calendar dataSelecionada = dateChooser.getSelectedDate();
+            java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
+            historico.setData(dataSQL);
+            
+            
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            String horaSelecionada = timePickerHora.getText();
+                Time time = new Time(format.parse(horaSelecionada).getTime());
+                historico.setHora(time);
+            
+                
+            
+            historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));
+            historico.setTipoPagamento(comboPagamento.getSelectedItem().toString());
+            
+            double valorJogosTotal;
+            
+            for(int i = comboJogo.getSelectedIndex(); i <= comboJogo.getSelectedIndex(); i++)
+            {                
+                valorJogosTotal = listaJogos.get(i).getValor() * Double.parseDouble(comboQnt.getSelectedItem().toString());
+                historico.setValorTotal(valorJogosTotal);
+            }
+            
+             
+                   
+            
+        }catch(Exception ex){
+            System.out.println("Erro ao inserir: " + ex);
+        }
+        
+        BDHistorico BDEXE = new BDHistorico();
+        BDEXE.inserir(historico);
+        dispose();
+        
+    }//GEN-LAST:event_botaoOkMouseClicked
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        
+    }//GEN-LAST:event_formFocusGained
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    public static void main(String args[]) {
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CadastrarJogos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CadastrarJogos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CadastrarJogos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CadastrarJogos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CadastrarJogos().setVisible(true);
+            }
+        });
+    }
+    
+    public void carregarCombos(){
         //START COMBOS
         //Carregar combo Clientes
         try {
@@ -247,91 +357,6 @@ public class CadastrarHistorico extends javax.swing.JFrame {
             comboPagamento.addItem(listaHistorico.get(i).getTipoPagamento());
         }  
         //END COMBOS//
-  
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_formWindowOpened
-
-    private void botaoCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelActionPerformed
-        dispose();
-    }//GEN-LAST:event_botaoCancelActionPerformed
-
-    private void botaoOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoOkMouseClicked
-            
-            
-            HistoricoDeCompras historico = new HistoricoDeCompras();
-            Jogos jogos = new Jogos();
-            BDHistorico BDH = new BDHistorico();
-        try{
-            
-            historico.setID_Cliente(comboCliente.getSelectedIndex()+1);
-            historico.setID_Jogo(comboJogo.getSelectedIndex()+1);
-            
-            Calendar dataSelecionada = dateChooser.getSelectedDate();
-            java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
-            historico.setData(dataSQL);
-            
-            
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            String horaSelecionada = timePickerHora.getText();
-                Time time = new Time(format.parse(horaSelecionada).getTime());
-                historico.setHora(time);
-            
-                
-            
-            
-            historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));
-            historico.setTipoPagamento(comboPagamento.getSelectedItem().toString());
-            
-//            for(int i = 0; i < arrayJogos.size(); i++)
-//            {
-//                arrayJogos.get(i).getValor();
-//            }
-            
-            double valorJogosTotal = listaJogos.get * historico.getQuantidade();
-            historico.setValorTotal(valorJogosTotal);
-                   
-            
-        }catch(Exception ex){
-            System.out.println("Erro ao inserir: " + ex);
-        }
-        
-        BDHistorico BDEXE = new BDHistorico();
-        BDEXE.inserir(historico);
-        
-    }//GEN-LAST:event_botaoOkMouseClicked
-
-    public static void main(String args[]) {
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarHistorico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastrarHistorico().setVisible(true);
-            }
-        });
     }
     
     
