@@ -1,5 +1,6 @@
 package Dados;
 
+import Class.HistoricoDeCompras;
 import Class.Joins;
 import Utilidade.Conexao;
 import java.sql.Connection;
@@ -32,12 +33,13 @@ public class BDJoins {
         ArrayList joinHistorico = new ArrayList();
         
         try{
-            String sql = "SELECT clientes.nomeCliente, jogos.titulo, historico.data, historico.hora, historico.quantidade, historico.tipoPagamento, historico.valorTotal FROM historico,clientes,jogos WHERE clientes.ID_cliente = historico.id_cliente AND jogos.ID_Jogo = historico.id_jogo ORDER BY historico.data, historico.hora";
+            String sql = "SELECT historico.ID_Historico, clientes.nomeCliente, jogos.titulo, historico.data, historico.hora, historico.quantidade, historico.tipoPagamento, historico.valorTotal FROM historico,clientes,jogos WHERE clientes.ID_cliente = historico.id_cliente AND jogos.ID_Jogo = historico.id_jogo ORDER BY historico.data, historico.hora";
             connL = this.conn;
             ps = connL.prepareStatement(sql);
             rs = ps.executeQuery();
             
             while(rs.next()){
+                   int ID_Historico = rs.getInt("ID_Historico");
                    DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
                    Date data = rs.getDate("data");
                    Time hora = rs.getTime("hora");
@@ -47,7 +49,7 @@ public class BDJoins {
                    String tipoPagamento = rs.getString("tipoPagamento");
                    Double valorTotal = rs.getDouble("valorTotal");
                    
-                   joinHistorico.add(new Joins(nome_cliente, nome_jogo, data, hora, quantidade, tipoPagamento,valorTotal));
+                   joinHistorico.add(new Joins(ID_Historico,nome_cliente, nome_jogo, data, hora, quantidade, tipoPagamento,valorTotal));
                }
             
         }catch(SQLException sqle){
@@ -58,5 +60,7 @@ public class BDJoins {
         }
         return joinHistorico;
     }
+    
+    
     
 }

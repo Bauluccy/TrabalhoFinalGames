@@ -174,4 +174,36 @@ public class BDHistorico {
         }
     }
     
+    public HistoricoDeCompras procurarJoins(int ID_His) {
+        PreparedStatement ps = null;
+        Connection connL = null;
+        ResultSet rs = null;
+        HistoricoDeCompras historico = new HistoricoDeCompras();
+        historico = null;
+        try {
+            String SQL = "SELECT * FROM historico WHERE ID_Historico = ?";
+            connL = this.conn;
+            ps = connL.prepareStatement(SQL);
+            ps.setInt(1, ID_His);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int ID_historico = rs.getInt("ID_Historico");
+                int id_cliente = rs.getInt("id_cliente");
+                int id_jogo = rs.getInt("id_jogo");
+                Date data = rs.getDate("data");
+                Time hora = rs.getTime("hora");
+                int qnt = rs.getInt("quantidade");
+                String tipoPagamento = rs.getString("tipoPagamento");
+                double total = rs.getDouble("valorTotal");
+                
+                historico = new HistoricoDeCompras(ID_historico, id_cliente, id_jogo, qnt, data,hora , tipoPagamento, total);
+            }
+        } catch (SQLException sqle) {
+            JOptionPane.showMessageDialog(null, "Erro ao procurar o historico " + sqle);
+        } finally {
+            //conexaoAulaDAO.close(connL, ps);
+        }
+        return historico;
+    }
+    
 }

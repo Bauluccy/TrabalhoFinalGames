@@ -20,7 +20,8 @@ public class Joins {
         
     }
 
-    public Joins(String nomeCliente, String nomeJogo, Date data, Time hora, int quantidade, String tipoPagamento, double valorTotal) {
+    public Joins(int ID_Historico, String nomeCliente, String nomeJogo, Date data, Time hora, int quantidade, String tipoPagamento, double valorTotal) {
+        this.ID_Historico = ID_Historico;
         this.nomeCliente = nomeCliente;
         this.nomeJogo = nomeJogo;
         this.data = data;

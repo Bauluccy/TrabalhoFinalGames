@@ -23,8 +23,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
     ArrayList<Joins> historicoJoin = new ArrayList();
     ArrayList<HistoricoDeCompras> listaHistorico = new ArrayList<HistoricoDeCompras>();
+    
 
-    public int index;
+    public int indexRow;
+    public String ID_Index; 
     
     public TelaPrincipal() {
         initComponents();
@@ -39,6 +41,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Tabela.getColumnModel().getColumn(4).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(5).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(6).setCellRenderer(centralizado);
+        Tabela.getColumnModel().getColumn(7).setCellRenderer(centralizado);
         
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,6 +50,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
 
     @SuppressWarnings("unchecked")
+        
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -77,14 +81,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Tabela.setAutoCreateRowSorter(true);
         Tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Data", "Hora", "Cliente", "Game", "Qnt", "Pagamento", "Valor Total"
+                "ID_Historico", "Data", "Hora", "Cliente", "Game", "Qnt", "Pagamento", "ValotTotal"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -97,6 +101,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(Tabela);
+        if (Tabela.getColumnModel().getColumnCount() > 0) {
+            Tabela.getColumnModel().getColumn(0).setMinWidth(0);
+            Tabela.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         botaoAdicionar.setText("Adicionar");
         botaoAdicionar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -170,14 +178,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void TabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseClicked
-        index = Tabela.getSelectedRow();
-
         if (evt.getClickCount() == 2) {
+            indexRow = Tabela.getSelectedRow();
+            ID_Index = Tabela.getValueAt(indexRow, 0).toString();
             AlterarHistorico formAlterarHist = new AlterarHistorico();
             formAlterarHist.setVisible(true);
         }
-        
-        
     }//GEN-LAST:event_TabelaMouseClicked
 
     public static void main(String args[]) {
@@ -210,13 +216,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
     }
     
-    public String nomeCliente, nomeJogo, tipoPagamento = null;
-    public Date data;
-    public Time hora;
-    public int quantidade;
-    public double valorTotal;
+    
     
     public void carregaTable(){
+        
+        String nomeCliente, nomeJogo, tipoPagamento = null;
+        Date data;
+        Time hora;
+        int ID_Historico, quantidade;
+        double valorTotal;
+        
         DefaultTableModel table = (DefaultTableModel) Tabela.getModel();
         
         
@@ -239,6 +248,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
         
         for(int i = 0; i < historicoJoin.size(); i++){
+            ID_Historico = historicoJoin.get(i).getID_Historico();
+            String ID_HisString = Integer.toString(ID_Historico);
+            
             DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
             String dataFormatada = dtOutput.format(historicoJoin.get(i).getData());
             
@@ -254,7 +266,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             valorTotal = historicoJoin.get(i).getValorTotal();
             String valorTotalString = Double.toString(valorTotal);
             
-            table.addRow(new String[]{dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
+            table.addRow(new String[]{ID_HisString,dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
         }
     }
 

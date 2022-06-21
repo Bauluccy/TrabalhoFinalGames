@@ -13,13 +13,13 @@ import Dados.BDHistorico;
 import Dados.BDJogos;
 import Dados.BDJoins;
 import Utilidade.TableModelGames;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -186,51 +186,38 @@ public class AlterarHistorico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        int index;
-        index = Integer.valueOf(this.telaprinc.index);
-        
-        TableModelGames tablemodelgame = new TableModelGames();
+        int indexRow = this.telaprinc.indexRow;
+        int indexID = Integer.parseInt(this.telaprinc.ID_Index);
+        HistoricoDeCompras historico = new HistoricoDeCompras();
+        BDHistorico bdh;
         
         carregaCombos();
         
         
         if (telaprinc.Tabela.getSelectedRow() != -1) {
-            
             try {
-                cadastroHis.
-            } catch (Exception e) {
+                bdh = new BDHistorico();
+                historico = bdh.procurarJoins(indexID);
+            }catch (Exception e) {
+                System.out.println("Erro ao tentar receber id" + e);
+            }
+            
+            if(historico == null){
+                JOptionPane.showMessageDialog(null, "Linha inválida!");
+            }else{
+                comboAlterCliente.setSelectedIndex(historico.getID_Cliente());
+                comboAlterJogo.setSelectedIndex(historico.getID_Jogo());
+                Date data = historico.getData();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(data);
+                alterData.setSelectedDate(cal);
+                
+                
+                
             }
             
             
             
-            
-            
-            for(int i = index; i <= index; i++){
-                
-                HistoricoDeCompras historico = new HistoricoDeCompras();
-                
-                DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
-                String dataFormatada = dtOutput.format(historicoJoin.get(i).getData());
-                alterData.setText(dataFormatada);
-                
-                comboAlterCliente.setSelectedItem(tablemodelgame.get(i).getNomeCliente());
-                
-                DateFormat hrOutput = new SimpleDateFormat("HH:mm");
-//                String horaFormatada = hrOutput.format(historicoJoin.get(i).getHora());
-                historico.setHora(listaHistorico.get(index - 1).getHora());
-                
-                
-                
-            }
-                
-                
-//                    try {
-//                        TelefoneDAO TDAO = new TelefoneDAO();
-//                        TDAO.atualizar(tel);                    
-//                        carregaFones();
-//                    } catch (ErpDAOException ex) {
-//                        System.out.println("problema");
-//                    }
                 
             }
         
