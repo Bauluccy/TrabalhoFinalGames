@@ -220,6 +220,7 @@ public class CadastrarClientes extends javax.swing.JFrame {
             BDHistorico BDH = new BDHistorico();
         try{
             
+            
             historico.setID_Cliente(comboCliente.getSelectedIndex()+1);
             historico.setID_Jogo(comboJogo.getSelectedIndex()+1);
             
@@ -232,7 +233,6 @@ public class CadastrarClientes extends javax.swing.JFrame {
             String horaSelecionada = timePickerHora.getText();
                 Time time = new Time(format.parse(horaSelecionada).getTime());
                 historico.setHora(time);
-            
                 
             
             historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));

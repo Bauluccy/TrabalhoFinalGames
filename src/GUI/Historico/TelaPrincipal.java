@@ -26,7 +26,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
 
     public int indexRow;
-    public String ID_Index; 
+    public static String ID_Index; 
     
     public TelaPrincipal() {
         initComponents();

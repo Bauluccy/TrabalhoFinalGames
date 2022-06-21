@@ -30,8 +30,15 @@ import javax.swing.table.DefaultTableModel;
  * @author fifol
  */
 public class AlterarHistorico extends javax.swing.JFrame {
-    TelaPrincipal telaprinc;
+//    TelaPrincipal telaprinc;
     CadastrarHistorico cadastroHis;
+    
+//    int indexID;
+//    
+//    public AlterarHistorico(TelaPrincipal tabela) {
+//        this();
+//        this.indexID = Integer.parseInt(tabela.ID_Index);
+//    }
     
 
     ArrayList<HistoricoDeCompras> listaHistorico = new ArrayList<HistoricoDeCompras>();
@@ -44,7 +51,7 @@ public class AlterarHistorico extends javax.swing.JFrame {
      */
     public AlterarHistorico() {
         initComponents();
-        this.telaprinc = new TelaPrincipal();
+//        this.telaprinc = new TelaPrincipal();
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
@@ -71,6 +78,8 @@ public class AlterarHistorico extends javax.swing.JFrame {
         alterTime = new com.github.lgooddatepicker.components.TimePicker();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -110,6 +119,8 @@ public class AlterarHistorico extends javax.swing.JFrame {
 
         jButton2.setText("Cancel");
 
+        jLabel7.setText("Total da compra");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -145,7 +156,11 @@ public class AlterarHistorico extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)))
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -175,26 +190,34 @@ public class AlterarHistorico extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(comboAlterPag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        int indexRow = this.telaprinc.indexRow;
-        int indexID = Integer.parseInt(this.telaprinc.ID_Index);
+//        int indexRow = telaprinc.indexRow;
+//       TelaPrincipal principal = new TelaPrincipal();
+
+       int indexID = Integer.parseInt(TelaPrincipal.ID_Index);
+        
+        
         HistoricoDeCompras historico = new HistoricoDeCompras();
         BDHistorico bdh;
         
         carregaCombos();
         
         
-        if (telaprinc.Tabela.getSelectedRow() != -1) {
+//        if (principal.Tabela.getSelectedRow() != -1) {
             try {
                 bdh = new BDHistorico();
                 historico = bdh.procurarJoins(indexID);
@@ -205,8 +228,8 @@ public class AlterarHistorico extends javax.swing.JFrame {
             if(historico == null){
                 JOptionPane.showMessageDialog(null, "Linha inválida!");
             }else{
-                comboAlterCliente.setSelectedIndex(historico.getID_Cliente());
-                comboAlterJogo.setSelectedIndex(historico.getID_Jogo());
+                comboAlterCliente.setSelectedIndex(historico.getID_Cliente()-1);
+                comboAlterJogo.setSelectedIndex(historico.getID_Jogo()-1);
                 Date data = historico.getData();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(data);
@@ -214,12 +237,13 @@ public class AlterarHistorico extends javax.swing.JFrame {
                 
                 
                 
+                
             }
             
             
             
                 
-            }
+//            }
         
     }//GEN-LAST:event_formWindowOpened
 
@@ -338,5 +362,7 @@ public class AlterarHistorico extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
