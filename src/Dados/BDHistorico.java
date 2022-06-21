@@ -132,7 +132,7 @@ public class BDHistorico {
             JOptionPane.showMessageDialog(null, "O campo historico não pode ser nulo.");
         }
         try {
-            String SQL = "UPDATE historico set id_cliente=?, id_jogo=?, data=?, hora=?, quantidade=?, tipoPagamento=?, valorTotal=?";
+            String SQL = "UPDATE historico set id_cliente=?, id_jogo=?, data=?, hora=?, quantidade=?, tipoPagamento=?, valorTotal=? WHERE ID_Historico=?";
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
             ps.setInt(1, historico.getID_Cliente());
@@ -146,6 +146,7 @@ public class BDHistorico {
             ps.setInt(5, historico.getQuantidade());
             ps.setString(6, historico.getTipoPagamento());
             ps.setDouble(7, historico.getValorTotal());
+            ps.setInt(8, historico.getID_Historico());
             ps.executeUpdate();
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Erro ao editar historico " + sqle);

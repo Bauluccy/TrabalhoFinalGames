@@ -16,6 +16,7 @@ import Utilidade.TableModelGames;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,7 +79,7 @@ public class AlterarHistorico extends javax.swing.JFrame {
         alterTime = new com.github.lgooddatepicker.components.TimePicker();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        alterTotal = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -116,6 +117,11 @@ public class AlterarHistorico extends javax.swing.JFrame {
         comboAlterPag.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setText("Atualizar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jButton2.setText("Cancel");
 
@@ -160,8 +166,9 @@ public class AlterarHistorico extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addComponent(alterTotal)
+                        .addGap(67, 67, 67)))
+                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +200,7 @@ public class AlterarHistorico extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(alterTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -205,51 +212,93 @@ public class AlterarHistorico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-//        int indexRow = telaprinc.indexRow;
-//       TelaPrincipal principal = new TelaPrincipal();
-
        int indexID = Integer.parseInt(TelaPrincipal.ID_Index);
         
-        
-        HistoricoDeCompras historico = new HistoricoDeCompras();
-        BDHistorico bdh;
-        
-        carregaCombos();
-        
-        
-//        if (principal.Tabela.getSelectedRow() != -1) {
-            try {
-                bdh = new BDHistorico();
-                historico = bdh.procurarJoins(indexID);
-            }catch (Exception e) {
-                System.out.println("Erro ao tentar receber id" + e);
-            }
-            
-            if(historico == null){
-                JOptionPane.showMessageDialog(null, "Linha inválida!");
-            }else{
-                comboAlterCliente.setSelectedIndex(historico.getID_Cliente()-1);
-                comboAlterJogo.setSelectedIndex(historico.getID_Jogo()-1);
-                Date data = historico.getData();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(data);
-                alterData.setSelectedDate(cal);
-                
-                
-                
-                
-            }
-            
-            
-            
-                
-//            }
+        procuraHistorico(indexID);
         
     }//GEN-LAST:event_formWindowOpened
 
     private void comboAlterClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAlterClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAlterClienteActionPerformed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        
+        HistoricoDeCompras historico = new HistoricoDeCompras();
+        BDHistorico bdh = new BDHistorico();
+        Date datahora = new Date();
+        
+        int indexID = Integer.parseInt(TelaPrincipal.ID_Index);
+        DateFormat dtoutput = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        historico = bdh.procurarJoins(indexID);
+        
+        if(historico != null){
+            historico.setID_Cliente(indexID);
+            historico.setID_Cliente(comboAlterCliente.getSelectedIndex() + 1);
+            historico.setID_Jogo(comboAlterJogo.getSelectedIndex() + 1);
+            try{
+                Calendar dataSelecionada = alterData.getSelectedDate();
+                java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
+                historico.setData(dataSQL);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            
+            String hora = new SimpleDateFormat("HH:mm").format(datahora);
+            historico.setHora(Time.valueOf(alterTime.getTime()));
+            historico.setQuantidade(Integer.parseInt(comboAlterQnt.getSelectedItem().toString()));
+            historico.setTipoPagamento(comboAlterPag.getSelectedItem().toString());
+            historico.setValorTotal(Double.parseDouble(alterTotal.getText()));
+            
+            bdh.atualizar(historico);
+        }else{
+                System.out.println("Erro ao atualizar usuario: ");
+        }
+        
+        
+        
+//        historico = bdh.procurarJoins(indexID);
+//        if(historico != null){
+//            historico.setID_Historico(indexID);
+//            
+//            try{
+//            
+//                historico.setID_Cliente(comboAlterCliente.getSelectedIndex() + 1);
+//                historico.setID_Jogo(comboAlterJogo.getSelectedIndex() + 1);
+//                
+//                
+//                Calendar dataSelecionada = alterData.getSelectedDate();
+//                java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
+//                historico.setData(dataSQL);
+//                
+//                
+//                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+//                String horaSelecionada = alterTime.getText();
+//                Time time = new Time(format.parse(horaSelecionada).getTime());
+//                historico.setHora(time);
+//                
+//                historico.setQuantidade(Integer.parseInt(comboAlterQnt.getSelectedItem().toString()));
+//                historico.setTipoPagamento(comboAlterPag.getSelectedItem().toString());
+//                
+//                double valorJogosTotal;
+//                
+//                for(int i = comboAlterJogo.getSelectedIndex(); i <= comboAlterJogo.getSelectedIndex(); i++)
+//                {                
+//                    valorJogosTotal = listaJogos.get(i).getValor() * Double.parseDouble(comboAlterJogo.getSelectedItem().toString());
+//                    historico.setValorTotal(valorJogosTotal);
+//                }
+//                
+//                bdh.atualizar(historico);
+//                JOptionPane.showMessageDialog(rootPane, "Atualizado com sucesso!!!");
+//                dispose();
+//                }catch(Exception ex){
+//                System.out.println("Erro ao atualizar usuario: " + ex);
+//                }
+//        }
+        
+        
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -285,6 +334,47 @@ public class AlterarHistorico extends javax.swing.JFrame {
                 new AlterarHistorico().setVisible(true);
             }
         });
+    }
+    
+    public void procuraHistorico(int index){
+        HistoricoDeCompras historico = new HistoricoDeCompras();
+        BDHistorico bdh;
+        
+        carregaCombos();
+        
+        
+//        if (principal.Tabela.getSelectedRow() != -1) {
+            try {
+                bdh = new BDHistorico();
+                historico = bdh.procurarJoins(index);
+            }catch (Exception e) {
+                System.out.println("Erro ao tentar receber id" + e);
+            }
+            
+            if(historico == null){
+                JOptionPane.showMessageDialog(null, "Linha inválida!");
+            }else{
+                comboAlterCliente.setSelectedIndex(historico.getID_Cliente()-1);
+                comboAlterJogo.setSelectedIndex(historico.getID_Jogo()-1);
+                
+                Date data = historico.getData();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(data);
+                alterData.setSelectedDate(cal);
+                
+                //Refatorar esse
+                //    VVV
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                Time hora = historico.getHora();
+                alterTime.setText(hora.toString());
+                
+                comboAlterQnt.setSelectedIndex(historico.getQuantidade() - 1);
+                comboAlterPag.setSelectedItem(historico.getTipoPagamento());
+                String totalString = Double.toString(historico.getValorTotal());
+//                System.out.println(totalString);
+                alterTotal.setText(totalString);
+                
+            }
     }
     
     public void carregaCombos(){
@@ -350,6 +440,7 @@ public class AlterarHistorico extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private datechooser.beans.DateChooserCombo alterData;
     private com.github.lgooddatepicker.components.TimePicker alterTime;
+    private javax.swing.JTextField alterTotal;
     private javax.swing.JComboBox<String> comboAlterCliente;
     private javax.swing.JComboBox<String> comboAlterJogo;
     private javax.swing.JComboBox<String> comboAlterPag;
@@ -363,6 +454,5 @@ public class AlterarHistorico extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
