@@ -91,11 +91,11 @@ public class BDJogos {
         }
 
         try {
-            String SQL = "UPDATE jogos set titulo=?, genero=?, valorUnidade WHERE ID_Jogo=?";
+            String SQL = "UPDATE jogos set titulo=?, genero=?, valorUnidade=? WHERE ID_Jogo=?";
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
             ps.setString(1, jogos.getNomeJogo());
-            ps.setString(2, jogos.getNomeJogo());
+            ps.setString(2, jogos.getGenero());
             ps.setDouble(3, jogos.getValor());
             ps.setInt(4, jogos.getID_Jogo());
             
@@ -109,11 +109,11 @@ public class BDJogos {
     }
     
     
-    public void excluir(Jogos jogos) {
+    public void excluir(int id) {
         PreparedStatement ps = null;
         Connection connL = null;
-        if (jogos == null) {
-            JOptionPane.showMessageDialog(null, "O campo jogos não pode ser nulo.");
+        if (id == 0) {
+            JOptionPane.showMessageDialog(null, "O campo id do jogo não pode ser nulo.");
         }
 
         try {
@@ -121,12 +121,40 @@ public class BDJogos {
             connL = this.conn;
 
             ps = connL.prepareStatement(SQL);
-            ps.setInt(1, jogos.getID_Jogo());
+            ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir o jogo" + sqle);
         } finally {
             Conexao.close(connL, ps);
         }
+    }
+    
+     public Jogos procurar(int ID_Jogo) {
+        PreparedStatement ps = null;
+        Connection connL = null;
+        ResultSet rs = null;
+        Jogos jogos = new Jogos();
+        jogos = null;
+        try {
+            String SQL = "SELECT * FROM jogos WHERE ID_Jogo = ?";
+            connL = this.conn;
+            ps = connL.prepareStatement(SQL);
+            ps.setInt(1, ID_Jogo);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id_jogo = rs.getInt("ID_Jogo");
+                String titulo = rs.getString("titulo");
+                String genero = rs.getString("genero");
+                double valor = rs.getDouble("valorUnidade");
+                
+                jogos = new Jogos(id_jogo, titulo, genero, valor);
+            }
+        } catch (SQLException sqle) {
+            JOptionPane.showMessageDialog(null, "Erro ao procurar o jogo " + sqle);
+        } finally {
+            //conexaoAulaDAO.close(connL, ps);
+        }
+        return jogos;
     }
 }

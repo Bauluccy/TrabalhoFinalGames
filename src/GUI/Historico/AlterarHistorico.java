@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -77,8 +78,8 @@ public class AlterarHistorico extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         comboAlterPag = new javax.swing.JComboBox<>();
         alterTime = new com.github.lgooddatepicker.components.TimePicker();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        botaoAtualizar = new javax.swing.JButton();
+        botaoCancel = new javax.swing.JButton();
         alterTotal = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
 
@@ -116,14 +117,24 @@ public class AlterarHistorico extends javax.swing.JFrame {
 
         comboAlterPag.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("Atualizar");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        botaoAtualizar.setText("Atualizar");
+        botaoAtualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                botaoAtualizarMouseClicked(evt);
             }
         });
 
-        jButton2.setText("Cancel");
+        botaoCancel.setText("Cancel");
+        botaoCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoCancelMouseClicked(evt);
+            }
+        });
+        botaoCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCancelActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Total da compra");
 
@@ -160,9 +171,9 @@ public class AlterarHistorico extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(alterTime, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(botaoAtualizar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                        .addComponent(botaoCancel))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -203,8 +214,8 @@ public class AlterarHistorico extends javax.swing.JFrame {
                     .addComponent(alterTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(botaoAtualizar)
+                    .addComponent(botaoCancel))
                 .addContainerGap())
         );
 
@@ -222,7 +233,7 @@ public class AlterarHistorico extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAlterClienteActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void botaoAtualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoAtualizarMouseClicked
         
         HistoricoDeCompras historico = new HistoricoDeCompras();
         BDHistorico bdh = new BDHistorico();
@@ -258,7 +269,15 @@ public class AlterarHistorico extends javax.swing.JFrame {
             System.out.println("Erro ao atualizar usuario: ");
         }
         
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_botaoAtualizarMouseClicked
+
+    private void botaoCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botaoCancelActionPerformed
+
+    private void botaoCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoCancelMouseClicked
+        dispose();
+    }//GEN-LAST:event_botaoCancelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -379,10 +398,12 @@ public class AlterarHistorico extends javax.swing.JFrame {
         
         
         //Carregar combo Pagamentos
+        String[] tipoPag = {"Cartão Crédito", "Cartão Débito", "Boleto", "Pix"};
+        
         try {
             comboAlterPag.removeAllItems();
             BDHistorico BDH = new BDHistorico();
-            listaHistorico = BDH.listarPagamentos();
+            comboAlterPag.setModel(new DefaultComboBoxModel<String>(tipoPag));
             
             
             
@@ -401,12 +422,12 @@ public class AlterarHistorico extends javax.swing.JFrame {
     private datechooser.beans.DateChooserCombo alterData;
     private com.github.lgooddatepicker.components.TimePicker alterTime;
     private javax.swing.JTextField alterTotal;
+    private javax.swing.JButton botaoAtualizar;
+    private javax.swing.JButton botaoCancel;
     private javax.swing.JComboBox<String> comboAlterCliente;
     private javax.swing.JComboBox<String> comboAlterJogo;
     private javax.swing.JComboBox<String> comboAlterPag;
     private javax.swing.JComboBox<String> comboAlterQnt;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

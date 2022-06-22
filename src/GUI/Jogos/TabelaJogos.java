@@ -1,10 +1,7 @@
 package GUI.Jogos;
 
-import GUI.Historico.*;
-import Class.HistoricoDeCompras;
-import Class.Joins;
-import Dados.BDHistorico;
-import Dados.BDJoins;
+import Class.Jogos;
+import Dados.BDJogos;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -24,8 +21,7 @@ import javax.swing.table.JTableHeader;
 
 public class TabelaJogos extends javax.swing.JFrame {
     
-    ArrayList<Joins> historicoJoin = new ArrayList();
-    ArrayList<HistoricoDeCompras> listaHistorico = new ArrayList<HistoricoDeCompras>();
+    ArrayList<Jogos> listaJogos = new ArrayList<Jogos>();
     
 
     public int indexRow;
@@ -33,20 +29,14 @@ public class TabelaJogos extends javax.swing.JFrame {
     
     public TabelaJogos() {
         initComponents();
-        JTableHeader header =  Tabela.getTableHeader();
-        DefaultTableCellRenderer centralizado = (DefaultTableCellRenderer) header.getDefaultRenderer();
+        JTableHeader header =  Tabela.getTableHeader();        DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();
         centralizado.setHorizontalAlignment(SwingConstants.CENTER);
         
         Tabela.getColumnModel().getColumn(0).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(1).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(2).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(3).setCellRenderer(centralizado);
-        Tabela.getColumnModel().getColumn(4).setCellRenderer(centralizado);
-        Tabela.getColumnModel().getColumn(5).setCellRenderer(centralizado);
-        Tabela.getColumnModel().getColumn(6).setCellRenderer(centralizado);
-        Tabela.getColumnModel().getColumn(7).setCellRenderer(centralizado);
-        
-        
+
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
     
@@ -67,7 +57,7 @@ public class TabelaJogos extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Historico de vendas");
+        setTitle("Tabela de Jogos");
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -84,14 +74,14 @@ public class TabelaJogos extends javax.swing.JFrame {
         Tabela.setAutoCreateRowSorter(true);
         Tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null}
             },
             new String [] {
-                "ID_Historico", "Data", "Hora", "Cliente", "Game", "Qnt", "Pagamento", "ValotTotal"
+                "ID_Jogos", "Titulo", "Gênero", "Valor p/ Unidade"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -194,12 +184,10 @@ public class TabelaJogos extends javax.swing.JFrame {
          
         
         if ((evt.getButton() == MouseEvent.BUTTON3)) { // Clique Direito
-//               indexRow = Tabela.getSelectedRow();
             int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
             
                 try {
-                    BDHistorico bdh = new BDHistorico();
-//                    HistoricoDeCompras historico = new HistoricoDeCompras();
+                    BDJogos bdh = new BDJogos();
                     bdh.excluir(codigo);
                     carregaTable();
                     JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso!!!:"+ codigo);
@@ -250,11 +238,9 @@ public class TabelaJogos extends javax.swing.JFrame {
     
     public void carregaTable(){
         
-        String nomeCliente, nomeJogo, tipoPagamento = null;
-        Date data;
-        Time hora;
-        int ID_Historico, quantidade;
-        double valorTotal;
+        String titulo, genero;
+        double valorUnidade;
+        int ID_Jogo;
         
         DefaultTableModel table = (DefaultTableModel) Tabela.getModel();
         
@@ -265,38 +251,29 @@ public class TabelaJogos extends javax.swing.JFrame {
             }
         }
         
-        BDJoins bdjoin;
+        BDJogos bdjogos;
         
         try{
-            bdjoin = new BDJoins();
-            historicoJoin = bdjoin.joinsListar();
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco." + ex);
+            bdjogos = new BDJogos();
+            listaJogos = bdjogos.listar();
+//        }catch(SQLException ex){
+//            JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco." + ex);
         } catch (Exception ex) {
             Logger.getLogger(TabelaJogos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
-        for(int i = 0; i < historicoJoin.size(); i++){
-            ID_Historico = historicoJoin.get(i).getID_Historico();
-            String ID_HisString = Integer.toString(ID_Historico);
+        for(int i = 0; i < listaJogos.size(); i++){
+            ID_Jogo = listaJogos.get(i).getID_Jogo();
+            String ID_JogoString = Integer.toString(ID_Jogo);
             
-            DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
-            String dataFormatada = dtOutput.format(historicoJoin.get(i).getData());
+            titulo = listaJogos.get(i).getNomeJogo();
+            genero = listaJogos.get(i).getGenero();
+
+            valorUnidade = listaJogos.get(i).getValor();
+            String valorUnidadeString = Double.toString(valorUnidade);
             
-            DateFormat hrOutput = new SimpleDateFormat("HH:mm");
-            String horaFormatada = hrOutput.format(historicoJoin.get(i).getHora());
-            
-            nomeCliente = historicoJoin.get(i).getNomeCliente();
-            nomeJogo = historicoJoin.get(i).getNomeJogo();
-            quantidade = historicoJoin.get(i).getQuantidade();
-            String quantidadeString = Integer.toString(quantidade);
-            
-            tipoPagamento = historicoJoin.get(i).getTipoPagamento();
-            valorTotal = historicoJoin.get(i).getValorTotal();
-            String valorTotalString = Double.toString(valorTotal);
-            
-            table.addRow(new String[]{ID_HisString,dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
+            table.addRow(new String[]{ID_JogoString,titulo,genero,valorUnidadeString});
         }
     }
 

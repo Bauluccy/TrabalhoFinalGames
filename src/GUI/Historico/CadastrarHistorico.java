@@ -14,6 +14,7 @@ import java.util.Calendar;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 import java.sql.Time;
+import javax.swing.DefaultComboBoxModel;
 
 public class CadastrarHistorico extends javax.swing.JFrame {
     ArrayList<Joins> listaJoins = new ArrayList<Joins>();
@@ -234,6 +235,8 @@ public class CadastrarHistorico extends javax.swing.JFrame {
             
                 
             
+                
+                
             historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));
             historico.setTipoPagamento(comboPagamento.getSelectedItem().toString());
             
@@ -304,7 +307,7 @@ public class CadastrarHistorico extends javax.swing.JFrame {
             BDClientes BDC = new BDClientes();
             listaCliente = BDC.listar();
         } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
+            System.out.println("Erro combo clientes" + ex);
         }
 
         for (int i = 0; i < listaCliente.size(); i++) {
@@ -317,7 +320,7 @@ public class CadastrarHistorico extends javax.swing.JFrame {
             BDJogos BDJ = new BDJogos();
             listaJogos = BDJ.listar();
         } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
+            System.out.println("Erro combo games" + ex);
         }
 
         for (int i = 0; i < listaJogos.size(); i++) {
@@ -328,7 +331,7 @@ public class CadastrarHistorico extends javax.swing.JFrame {
         try {
             comboQnt.removeAllItems();
         } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
+            System.out.println("Erro combo quantidade" + ex);
         }
 
         for (int i = 1; i < 11; i++) {
@@ -337,11 +340,12 @@ public class CadastrarHistorico extends javax.swing.JFrame {
         
         
         //Carregar combo Pagamentos
+        String[] tipoPag = {"Cartão Crédito", "Cartão Débito", "Boleto", "Pix"};
         try {
             comboPagamento.removeAllItems();
             BDHistorico BDH = new BDHistorico();
-            listaHistorico = BDH.listarPagamentos();
             
+            comboPagamento.setModel(new DefaultComboBoxModel<String>(tipoPag));
             
             
         } catch (Exception ex) {

@@ -4,16 +4,8 @@
  */
 package GUI.Clientes;
 
-import GUI.Historico.*;
 import Class.Clientes;
-import Class.HistoricoDeCompras;
-import Class.Jogos;
-import Class.Joins;
 import Dados.BDClientes;
-import Dados.BDHistorico;
-import Dados.BDJogos;
-import Dados.BDJoins;
-import Utilidade.TableModelGames;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -43,10 +35,9 @@ public class AlterarClientes extends javax.swing.JFrame {
 //    }
     
 
-    ArrayList<HistoricoDeCompras> listaHistorico = new ArrayList<HistoricoDeCompras>();
-    ArrayList<Joins> historicoJoin = new ArrayList<Joins>();
+    
     ArrayList<Clientes> listaCliente = new ArrayList<Clientes>();
-    ArrayList<Jogos> listaJogos = new ArrayList<Jogos>();
+    
     
     /**
      * Creates new form Alterar
@@ -67,66 +58,47 @@ public class AlterarClientes extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        comboAlterCliente = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        comboAlterJogo = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        alterData = new datechooser.beans.DateChooserCombo();
-        comboAlterQnt = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        comboAlterPag = new javax.swing.JComboBox<>();
-        alterTime = new com.github.lgooddatepicker.components.TimePicker();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        alterTotal = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
+        alterDataCliente = new datechooser.beans.DateChooserCombo();
+        buttonAtualizar = new javax.swing.JButton();
+        buttonCancel = new javax.swing.JButton();
+        textAlterNome = new javax.swing.JTextField();
+        textAlterCPF = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        textAlterLogin = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tabela Clientes");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
-        jLabel1.setText("Cliente");
+        jLabel1.setText("Nome");
 
-        comboAlterCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        comboAlterCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboAlterClienteActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Game");
-
-        comboAlterJogo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel2.setText("CPF");
 
         jLabel3.setText("Data");
 
-        jLabel5.setText("Quantidade");
+        alterDataCliente.setCalendarPreferredSize(new java.awt.Dimension(370, 250));
 
-        alterData.setCalendarPreferredSize(new java.awt.Dimension(370, 250));
-
-        comboAlterQnt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel4.setText("Hora");
-
-        jLabel6.setText("Pagamento");
-
-        comboAlterPag.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jButton1.setText("Atualizar");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonAtualizar.setText("Atualizar");
+        buttonAtualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                buttonAtualizarMouseClicked(evt);
             }
         });
 
-        jButton2.setText("Cancel");
+        buttonCancel.setText("Cancel");
+        buttonCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonCancelMouseClicked(evt);
+            }
+        });
 
-        jLabel7.setText("Total da compra");
+        jLabel8.setText("Login");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,42 +106,28 @@ public class AlterarClientes extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(comboAlterCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(comboAlterJogo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(18, 18, 18)
-                            .addComponent(alterData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addGap(18, 18, 18)
-                            .addComponent(comboAlterPag, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addGap(18, 18, 18)
-                            .addComponent(comboAlterQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addGap(18, 18, 18)
-                            .addComponent(alterTime, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(alterTotal)
-                        .addGap(67, 67, 67)))
-                .addGap(22, 22, 22))
+                        .addComponent(textAlterNome))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonAtualizar)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonCancel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textAlterLogin))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(alterDataCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textAlterCPF))))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,35 +135,23 @@ public class AlterarClientes extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(comboAlterCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textAlterNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(comboAlterJogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textAlterCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(alterData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(alterDataCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(textAlterLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(alterTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(comboAlterQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(comboAlterPag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(alterTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(buttonAtualizar)
+                    .addComponent(buttonCancel))
                 .addContainerGap())
         );
 
@@ -215,51 +161,47 @@ public class AlterarClientes extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        int indexID = Integer.parseInt(TabelaClientes.ID_Index);
         
-        procuraHistorico(indexID);
+        procuraCliente(indexID);
         
     }//GEN-LAST:event_formWindowOpened
 
-    private void comboAlterClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAlterClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboAlterClienteActionPerformed
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void buttonAtualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAtualizarMouseClicked
         
-        HistoricoDeCompras historico = new HistoricoDeCompras();
-        BDHistorico bdh = new BDHistorico();
+        Clientes clientes = new Clientes();
+        BDClientes bdc = new BDClientes();
         Date datahora = new Date();
         
         int indexID = Integer.parseInt(TabelaClientes.ID_Index);
         DateFormat dtoutput = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        historico = bdh.procurarJoins(indexID);
+        clientes = bdc.procurar(indexID);
         
-        if(historico != null){
-            historico.setID_Cliente(indexID);
-            historico.setID_Cliente(comboAlterCliente.getSelectedIndex() + 1);
-            historico.setID_Jogo(comboAlterJogo.getSelectedIndex() + 1);
+        if(clientes != null){
+            clientes.setID_Cliente(indexID);
+            clientes.setNomeCliente(textAlterNome.getText());
+            clientes.setCPF(Long.parseLong(textAlterCPF.getText()));
             try{
-                Calendar dataSelecionada = alterData.getSelectedDate();
+                Calendar dataSelecionada = alterDataCliente.getSelectedDate();
                 java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
-                historico.setData(dataSQL);
+                clientes.setDataNasc(dataSQL);
             }catch(Exception e){
                 e.printStackTrace();
             }
+            clientes.setClienteLogin(textAlterLogin.getText());
             
-            String hora = new SimpleDateFormat("HH:mm").format(datahora);
-            historico.setHora(Time.valueOf(alterTime.getTime()));
-            historico.setQuantidade(Integer.parseInt(comboAlterQnt.getSelectedItem().toString()));
-            historico.setTipoPagamento(comboAlterPag.getSelectedItem().toString());
-            historico.setValorTotal(Double.parseDouble(alterTotal.getText()));
             
-            bdh.atualizar(historico);
+            bdc.atualizar(clientes);
             JOptionPane.showMessageDialog(rootPane, "Atualizado com sucesso!!!");
             dispose();
         }else{
             System.out.println("Erro ao atualizar usuario: ");
         }
         
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_buttonAtualizarMouseClicked
+
+    private void buttonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCancelMouseClicked
+        dispose();
+    }//GEN-LAST:event_buttonCancelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -303,123 +245,106 @@ public class AlterarClientes extends javax.swing.JFrame {
         });
     }
     
-    public void procuraHistorico(int index){
-        HistoricoDeCompras historico = new HistoricoDeCompras();
-        BDHistorico bdh;
+    public void procuraCliente(int index){
+        Clientes clientes = new Clientes();
+        BDClientes bdc;
         
-        carregaCombos();
+//        carregaCombos();
         
         
 //        if (principal.Tabela.getSelectedRow() != -1) {
             try {
-                bdh = new BDHistorico();
-                historico = bdh.procurarJoins(index);
+                bdc = new BDClientes();
+                clientes = bdc.procurar(index);
             }catch (Exception e) {
-                System.out.println("Erro ao tentar receber id" + e);
+                System.out.println("Erro ao tentar receber id do cliente:" + e);
             }
             
-            if(historico == null){
+            if(clientes == null){
                 JOptionPane.showMessageDialog(null, "Linha inválida!");
             }else{
-                comboAlterCliente.setSelectedIndex(historico.getID_Cliente()-1);
-                comboAlterJogo.setSelectedIndex(historico.getID_Jogo()-1);
+                textAlterNome.setText(clientes.getNomeCliente());
+                textAlterCPF.setText(Long.toString(clientes.getCPF()));
                 
-                Date data = historico.getData();
+                Date data = clientes.getDataNasc();
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(data);
-                alterData.setSelectedDate(cal);
-                
-                //Refatorar esse
-                //    VVV
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                Time hora = historico.getHora();
-                alterTime.setText(hora.toString());
-                
-                comboAlterQnt.setSelectedIndex(historico.getQuantidade() - 1);
-                comboAlterPag.setSelectedItem(historico.getTipoPagamento());
-                String totalString = Double.toString(historico.getValorTotal());
-//                System.out.println(totalString);
-                alterTotal.setText(totalString);
+                alterDataCliente.setSelectedDate(cal);
+                textAlterLogin.setText(clientes.getClienteLogin());
                 
             }
     }
     
-    public void carregaCombos(){
-        
-        //START COMBOS
-        //Carregar combo Clientes
-        try {
-            comboAlterCliente.removeAllItems();
-            BDClientes BDC = new BDClientes();
-            listaCliente = BDC.listar();
-        } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
-        }
-
-        for (int i = 0; i < listaCliente.size(); i++) {
-            comboAlterCliente.addItem(listaCliente.get(i).getNomeCliente());
-        }  
-        
-        //Carregar combo Games
-        try {
-            comboAlterJogo.removeAllItems();
-            BDJogos BDJ = new BDJogos();
-            listaJogos = BDJ.listar();
-        } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
-        }
-
-        for (int i = 0; i < listaJogos.size(); i++) {
-            comboAlterJogo.addItem(listaJogos.get(i).getNomeJogo());
-        }
-        
-        //Carregar combo Qquantidade
-        try {
-            comboAlterQnt.removeAllItems();
-        } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
-        }
-
-        for (int i = 1; i < 11; i++) {
-            comboAlterQnt.addItem(""+i);
-        }
-        
-        
-        //Carregar combo Pagamentos
-        try {
-            comboAlterPag.removeAllItems();
-            BDHistorico BDH = new BDHistorico();
-            listaHistorico = BDH.listarPagamentos();
-            
-            
-            
-        } catch (Exception ex) {
-            System.out.println("Erro qualquer" + ex);
-        }
-        
-        
-        for (int i = 0; i < listaHistorico.size(); i++) {
-            comboAlterPag.addItem(listaHistorico.get(i).getTipoPagamento());
-        }  
-        //END COMBOS//
-    }
+//    public void carregaCombos(){
+//        
+//        //START COMBOS
+//        //Carregar combo Clientes
+//        try {
+//            comboAlterCliente.removeAllItems();
+//            BDClientes BDC = new BDClientes();
+//            listaCliente = BDC.listar();
+//        } catch (Exception ex) {
+//            System.out.println("Erro qualquer" + ex);
+//        }
+//
+//        for (int i = 0; i < listaCliente.size(); i++) {
+//            comboAlterCliente.addItem(listaCliente.get(i).getNomeCliente());
+//        }  
+//        
+//        //Carregar combo Games
+//        try {
+//            comboAlterJogo.removeAllItems();
+//            BDJogos BDJ = new BDJogos();
+//            listaJogos = BDJ.listar();
+//        } catch (Exception ex) {
+//            System.out.println("Erro qualquer" + ex);
+//        }
+//
+//        for (int i = 0; i < listaJogos.size(); i++) {
+//            comboAlterJogo.addItem(listaJogos.get(i).getNomeJogo());
+//        }
+//        
+//        //Carregar combo Qquantidade
+//        try {
+//            comboAlterQnt.removeAllItems();
+//        } catch (Exception ex) {
+//            System.out.println("Erro qualquer" + ex);
+//        }
+//
+//        for (int i = 1; i < 11; i++) {
+//            comboAlterQnt.addItem(""+i);
+//        }
+//        
+//        
+//        //Carregar combo Pagamentos
+//        try {
+//            comboAlterPag.removeAllItems();
+//            BDHistorico BDH = new BDHistorico();
+//            listaHistorico = BDH.listarPagamentos();
+//            
+//            
+//            
+//        } catch (Exception ex) {
+//            System.out.println("Erro qualquer" + ex);
+//        }
+//        
+//        
+//        for (int i = 0; i < listaHistorico.size(); i++) {
+//            comboAlterPag.addItem(listaHistorico.get(i).getTipoPagamento());
+//        }  
+//        //END COMBOS//
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private datechooser.beans.DateChooserCombo alterData;
-    private com.github.lgooddatepicker.components.TimePicker alterTime;
-    private javax.swing.JTextField alterTotal;
-    private javax.swing.JComboBox<String> comboAlterCliente;
-    private javax.swing.JComboBox<String> comboAlterJogo;
-    private javax.swing.JComboBox<String> comboAlterPag;
-    private javax.swing.JComboBox<String> comboAlterQnt;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private datechooser.beans.DateChooserCombo alterDataCliente;
+    private javax.swing.JButton buttonAtualizar;
+    private javax.swing.JButton buttonCancel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField textAlterCPF;
+    private javax.swing.JTextField textAlterLogin;
+    private javax.swing.JTextField textAlterNome;
     // End of variables declaration//GEN-END:variables
 }

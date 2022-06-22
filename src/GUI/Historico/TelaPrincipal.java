@@ -4,6 +4,8 @@ import Class.HistoricoDeCompras;
 import Class.Joins;
 import Dados.BDHistorico;
 import Dados.BDJoins;
+import GUI.Clientes.TabelaClientes;
+import GUI.Jogos.TabelaJogos;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -62,8 +64,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         botaoSair = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        MenuClientes = new javax.swing.JMenuItem();
+        MenuGames = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Historico de vendas");
@@ -127,13 +129,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenu1.setText("Opções");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem1.setText("Clientes");
-        jMenu1.add(jMenuItem1);
+        MenuClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        MenuClientes.setText("Clientes");
+        MenuClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MenuClientesMouseClicked(evt);
+            }
+        });
+        MenuClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuClientesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MenuClientes);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem2.setText("Games");
-        jMenu1.add(jMenuItem2);
+        MenuGames.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        MenuGames.setText("Games");
+        MenuGames.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuGamesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MenuGames);
 
         jMenuBar1.add(jMenu1);
 
@@ -211,6 +228,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void TabelaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_TabelaMouseExited
+
+    private void MenuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuClientesActionPerformed
+        TabelaClientes tabelaClientes = new TabelaClientes();
+        tabelaClientes.setLocationRelativeTo(rootPane);
+        tabelaClientes.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuClientesActionPerformed
+
+    private void MenuClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuClientesMouseClicked
+        
+    }//GEN-LAST:event_MenuClientesMouseClicked
+
+    private void MenuGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuGamesActionPerformed
+        TabelaJogos tabelaJogos = new TabelaJogos();
+        tabelaJogos.setLocationRelativeTo(rootPane);
+        tabelaJogos.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuGamesActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -297,13 +332,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MenuClientes;
+    private javax.swing.JMenuItem MenuGames;
     public javax.swing.JTable Tabela;
     private javax.swing.JButton botaoAdicionar;
     private javax.swing.JButton botaoSair;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
