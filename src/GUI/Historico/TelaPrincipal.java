@@ -2,7 +2,9 @@ package GUI.Historico;
 
 import Class.HistoricoDeCompras;
 import Class.Joins;
+import Dados.BDHistorico;
 import Dados.BDJoins;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -99,6 +101,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TabelaMouseClicked(evt);
             }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                TabelaMouseExited(evt);
+            }
         });
         jScrollPane1.setViewportView(Tabela);
         if (Tabela.getColumnModel().getColumnCount() > 0) {
@@ -184,7 +189,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
             AlterarHistorico formAlterarHist = new AlterarHistorico();
             formAlterarHist.setVisible(true);
         }
+        
+        if ((evt.getButton() & MouseEvent.BUTTON3) > 0) { // Clique Direito
+//               indexRow = Tabela.getSelectedRow();
+               int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
+               int resp = JOptionPane.showConfirmDialog(rootPane, "Deseja excluir esta compra? " + listaHistorico.get(indexRow).getID_Historico(), "Confirmar edição", 0);
+                if (resp == 0) {
+                    try {
+                        BDHistorico bdh = new BDHistorico();
+                        HistoricoDeCompras historico = new HistoricoDeCompras();
+                        bdh.excluir(historico.getID_Historico());
+                        carregaTable();
+                    } catch (Exception ex) {
+                        System.out.println("problema");
+                    }
+            }
+            
+        }
     }//GEN-LAST:event_TabelaMouseClicked
+
+    private void TabelaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TabelaMouseExited
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

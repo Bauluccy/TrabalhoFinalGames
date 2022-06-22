@@ -156,17 +156,18 @@ public class BDHistorico {
     }
     
     
-    public void excluir(HistoricoDeCompras historico) {
+    public void excluir(int id) {
         PreparedStatement ps = null;
         Connection connL = null;
-        if (historico == null) {
+        if (id == 0) {
             JOptionPane.showMessageDialog(null, "O campo historico não pode ser nulo.");
         }
         try {
             String SQL = "DELETE FROM historico WHERE ID_Historico=?";
             connL = this.conn;
+            
             ps = connL.prepareStatement(SQL);
-            ps.setInt(1, historico.getID_Historico());
+            ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir historico " + sqle);
