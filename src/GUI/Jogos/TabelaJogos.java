@@ -3,7 +3,9 @@ package GUI.Jogos;
 import GUI.Historico.*;
 import Class.HistoricoDeCompras;
 import Class.Joins;
+import Dados.BDHistorico;
 import Dados.BDJoins;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -25,6 +27,9 @@ public class TabelaJogos extends javax.swing.JFrame {
     ArrayList<Joins> historicoJoin = new ArrayList();
     ArrayList<HistoricoDeCompras> listaHistorico = new ArrayList<HistoricoDeCompras>();
     
+
+    public int indexRow;
+    public static String ID_Index; 
     
     public TabelaJogos() {
         initComponents();
@@ -39,6 +44,7 @@ public class TabelaJogos extends javax.swing.JFrame {
         Tabela.getColumnModel().getColumn(4).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(5).setCellRenderer(centralizado);
         Tabela.getColumnModel().getColumn(6).setCellRenderer(centralizado);
+        Tabela.getColumnModel().getColumn(7).setCellRenderer(centralizado);
         
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,6 +53,7 @@ public class TabelaJogos extends javax.swing.JFrame {
     
 
     @SuppressWarnings("unchecked")
+        
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -74,16 +81,17 @@ public class TabelaJogos extends javax.swing.JFrame {
             }
         });
 
+        Tabela.setAutoCreateRowSorter(true);
         Tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Data", "Hora", "Cliente", "Game", "Qnt", "Pagamento", "Valor Total"
+                "ID_Historico", "Data", "Hora", "Cliente", "Game", "Qnt", "Pagamento", "ValotTotal"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -94,8 +102,15 @@ public class TabelaJogos extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TabelaMouseClicked(evt);
             }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                TabelaMouseExited(evt);
+            }
         });
         jScrollPane1.setViewportView(Tabela);
+        if (Tabela.getColumnModel().getColumnCount() > 0) {
+            Tabela.getColumnModel().getColumn(0).setMinWidth(0);
+            Tabela.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         botaoAdicionar.setText("Adicionar");
         botaoAdicionar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -149,6 +164,7 @@ public class TabelaJogos extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+        
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         carregaTable();
@@ -168,31 +184,34 @@ public class TabelaJogos extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void TabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseClicked
-//        int index;
-//        index = Tabela.getSelectedRow();
-//         if (evt.getClickCount() == 2) {
-//            if (index != -1) {
-//                HistoricoDeCompras historico = new HistoricoDeCompras();
-//                
-//                DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
-//                String dataFormatada = dtOutput.format(historicoJoin.get(index).getData());
-//                historico.setData(listaHistorico.get(index).getData());
-//                get.setFone(JOptionPane.showInputDialog(rootPane, "Altere o telefone ", Fones.get(index).getFone()));
-//                
-//                    try {
-//                        TelefoneDAO TDAO = new TelefoneDAO();
-//                        TDAO.atualizar(tel);                    
-//                        carregaFones();
-//                    } catch (ErpDAOException ex) {
-//                        System.out.println("problema");
-//                    }
-//                
-//            }
-//
-//        }
+        if (evt.getClickCount() == 2) {
+            indexRow = Tabela.getSelectedRow();
+            ID_Index = Tabela.getValueAt(indexRow, 0).toString();
+            AlterarJogos formAlterarHist = new AlterarJogos();
+            formAlterarHist.setVisible(true);
+        }
         
+         
         
+        if ((evt.getButton() == MouseEvent.BUTTON3)) { // Clique Direito
+//               indexRow = Tabela.getSelectedRow();
+            int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
+            
+                try {
+                    BDHistorico bdh = new BDHistorico();
+//                    HistoricoDeCompras historico = new HistoricoDeCompras();
+                    bdh.excluir(codigo);
+                    carregaTable();
+                    JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso!!!:"+ codigo);
+                } catch (Exception ex) {
+                    System.out.println("problema");
+                }
+        }
     }//GEN-LAST:event_TabelaMouseClicked
+
+    private void TabelaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TabelaMouseExited
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -227,13 +246,17 @@ public class TabelaJogos extends javax.swing.JFrame {
         });
     }
     
+    
+    
     public void carregaTable(){
-        DefaultTableModel table = (DefaultTableModel) Tabela.getModel();
+        
         String nomeCliente, nomeJogo, tipoPagamento = null;
         Date data;
         Time hora;
-        int quantidade;
+        int ID_Historico, quantidade;
         double valorTotal;
+        
+        DefaultTableModel table = (DefaultTableModel) Tabela.getModel();
         
         
         if(Tabela.getRowCount() > 0){
@@ -255,6 +278,9 @@ public class TabelaJogos extends javax.swing.JFrame {
         
         
         for(int i = 0; i < historicoJoin.size(); i++){
+            ID_Historico = historicoJoin.get(i).getID_Historico();
+            String ID_HisString = Integer.toString(ID_Historico);
+            
             DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
             String dataFormatada = dtOutput.format(historicoJoin.get(i).getData());
             
@@ -270,13 +296,12 @@ public class TabelaJogos extends javax.swing.JFrame {
             valorTotal = historicoJoin.get(i).getValorTotal();
             String valorTotalString = Double.toString(valorTotal);
             
-            table.addRow(new String[]{dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
-            
+            table.addRow(new String[]{ID_HisString,dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable Tabela;
+    public javax.swing.JTable Tabela;
     private javax.swing.JButton botaoAdicionar;
     private javax.swing.JButton botaoSair;
     private javax.swing.JMenu jMenu1;

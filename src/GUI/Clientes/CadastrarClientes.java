@@ -24,7 +24,7 @@ public class CadastrarClientes extends javax.swing.JFrame {
 
     public CadastrarClientes() {
         initComponents();
-        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+//        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")
@@ -220,7 +220,6 @@ public class CadastrarClientes extends javax.swing.JFrame {
             BDHistorico BDH = new BDHistorico();
         try{
             
-            
             historico.setID_Cliente(comboCliente.getSelectedIndex()+1);
             historico.setID_Jogo(comboJogo.getSelectedIndex()+1);
             
@@ -233,6 +232,7 @@ public class CadastrarClientes extends javax.swing.JFrame {
             String horaSelecionada = timePickerHora.getText();
                 Time time = new Time(format.parse(horaSelecionada).getTime());
                 historico.setHora(time);
+            
                 
             
             historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));
@@ -364,11 +364,11 @@ public class CadastrarClientes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancel;
     private javax.swing.JButton botaoOk;
-    public javax.swing.JComboBox<String> comboCliente;
-    public javax.swing.JComboBox<String> comboJogo;
-    public javax.swing.JComboBox<String> comboPagamento;
-    public javax.swing.JComboBox<String> comboQnt;
-    public datechooser.beans.DateChooserCombo dateChooser;
+    private javax.swing.JComboBox<String> comboCliente;
+    private javax.swing.JComboBox<String> comboJogo;
+    private javax.swing.JComboBox<String> comboPagamento;
+    private javax.swing.JComboBox<String> comboQnt;
+    private datechooser.beans.DateChooserCombo dateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -377,6 +377,6 @@ public class CadastrarClientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    public com.github.lgooddatepicker.components.TimePicker timePickerHora;
+    private com.github.lgooddatepicker.components.TimePicker timePickerHora;
     // End of variables declaration//GEN-END:variables
 }

@@ -190,21 +190,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
             formAlterarHist.setVisible(true);
         }
         
-        if ((evt.getButton() & MouseEvent.BUTTON3) > 0) { // Clique Direito
+         
+        
+        if ((evt.getButton() == MouseEvent.BUTTON3)) { // Clique Direito
 //               indexRow = Tabela.getSelectedRow();
-               int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
-               int resp = JOptionPane.showConfirmDialog(rootPane, "Deseja excluir esta compra? " + listaHistorico.get(indexRow).getID_Historico(), "Confirmar edição", 0);
-                if (resp == 0) {
-                    try {
-                        BDHistorico bdh = new BDHistorico();
-                        HistoricoDeCompras historico = new HistoricoDeCompras();
-                        bdh.excluir(historico.getID_Historico());
-                        carregaTable();
-                    } catch (Exception ex) {
-                        System.out.println("problema");
-                    }
-            }
+            int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
             
+                try {
+                    BDHistorico bdh = new BDHistorico();
+//                    HistoricoDeCompras historico = new HistoricoDeCompras();
+                    bdh.excluir(codigo);
+                    carregaTable();
+                    JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso!!!:"+ codigo);
+                } catch (Exception ex) {
+                    System.out.println("problema");
+                }
         }
     }//GEN-LAST:event_TabelaMouseClicked
 

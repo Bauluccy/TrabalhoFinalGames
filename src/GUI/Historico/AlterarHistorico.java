@@ -252,51 +252,11 @@ public class AlterarHistorico extends javax.swing.JFrame {
             historico.setValorTotal(Double.parseDouble(alterTotal.getText()));
             
             bdh.atualizar(historico);
+            JOptionPane.showMessageDialog(rootPane, "Atualizado com sucesso!!!");
+            dispose();
         }else{
-                System.out.println("Erro ao atualizar usuario: ");
+            System.out.println("Erro ao atualizar usuario: ");
         }
-        
-        
-        
-//        historico = bdh.procurarJoins(indexID);
-//        if(historico != null){
-//            historico.setID_Historico(indexID);
-//            
-//            try{
-//            
-//                historico.setID_Cliente(comboAlterCliente.getSelectedIndex() + 1);
-//                historico.setID_Jogo(comboAlterJogo.getSelectedIndex() + 1);
-//                
-//                
-//                Calendar dataSelecionada = alterData.getSelectedDate();
-//                java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
-//                historico.setData(dataSQL);
-//                
-//                
-//                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-//                String horaSelecionada = alterTime.getText();
-//                Time time = new Time(format.parse(horaSelecionada).getTime());
-//                historico.setHora(time);
-//                
-//                historico.setQuantidade(Integer.parseInt(comboAlterQnt.getSelectedItem().toString()));
-//                historico.setTipoPagamento(comboAlterPag.getSelectedItem().toString());
-//                
-//                double valorJogosTotal;
-//                
-//                for(int i = comboAlterJogo.getSelectedIndex(); i <= comboAlterJogo.getSelectedIndex(); i++)
-//                {                
-//                    valorJogosTotal = listaJogos.get(i).getValor() * Double.parseDouble(comboAlterJogo.getSelectedItem().toString());
-//                    historico.setValorTotal(valorJogosTotal);
-//                }
-//                
-//                bdh.atualizar(historico);
-//                JOptionPane.showMessageDialog(rootPane, "Atualizado com sucesso!!!");
-//                dispose();
-//                }catch(Exception ex){
-//                System.out.println("Erro ao atualizar usuario: " + ex);
-//                }
-//        }
-        
         
     }//GEN-LAST:event_jButton1MouseClicked
 
