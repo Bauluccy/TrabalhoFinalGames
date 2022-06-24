@@ -42,8 +42,9 @@ public class BDClientes {
                 long cpfCliente = rs.getLong("CPF");
                 String loginCLiente = rs.getString("ClienteLogin");
                 Date dataNasc = rs.getDate("dataNasc");
+                int ativo = rs.getInt("ativo");
 
-                listaClientes.add(new Clientes(id_clientes, nome_Cliente, cpfCliente, loginCLiente, dataNasc));
+                listaClientes.add(new Clientes(id_clientes, nome_Cliente, cpfCliente, loginCLiente, dataNasc, ativo));
             }
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Erro ao listar clientes " + sqle);
@@ -64,8 +65,8 @@ public class BDClientes {
             JOptionPane.showMessageDialog(null, "O campo cliente não pode ser nulo.");
         }
         try {
-            String SQL = "INSERT INTO clientes (nomeCliente, CPF, ClienteLogin, dataNasc)"
-                    + "values (?,?,?,?)";
+            String SQL = "INSERT INTO clientes (nomeCliente, CPF, ClienteLogin, dataNasc,ativo)"
+                    + "values (?,?,?,?,?)";
 
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
@@ -75,6 +76,7 @@ public class BDClientes {
             java.util.Date dataJAVA = clientes.getDataNasc();
             java.sql.Date dataSQL = new java.sql.Date(dataJAVA.getTime());
             ps.setDate(4,dataSQL);
+            ps.setInt(5, clientes.getAtivo());
 
             ps.executeUpdate();
         } catch (SQLException sqle) {
@@ -113,24 +115,35 @@ public class BDClientes {
         }
     }
     
-    public void excluir(int id) {
+    public void excluir(int id, int ativo) {
         PreparedStatement ps = null;
         Connection connL = null;
         if (id == 0) {
             JOptionPane.showMessageDialog(null, "O campo clientes não pode ser nulo.");
         }
-        try {
-            String SQL = "DELETE FROM clientes WHERE ID_cliente=?";
+        try{
+            String SQL = "UPDATE clientes set ativo=? WHERE ID_cliente=?";
             connL = this.conn;
 
             ps = connL.prepareStatement(SQL);
-            ps.setInt(1, id);
+            ps.setInt(1,ativo);
+            ps.setInt(2, id);
             ps.executeUpdate();
-        } catch (SQLException sqle) {
-            JOptionPane.showMessageDialog(null, "Erro ao excluir o cliente " + sqle);
-        } finally {
-            Conexao.close(connL, ps);
+        }catch(SQLException sqle){
+            
         }
+//        try {
+//            String SQL = "DELETE FROM clientes WHERE ID_cliente=?";
+//            connL = this.conn;
+//
+//            ps = connL.prepareStatement(SQL);
+//            ps.setInt(1, id);
+//            ps.executeUpdate();
+//        } catch (SQLException sqle) {
+//            JOptionPane.showMessageDialog(null, "Erro ao excluir o cliente " + sqle);
+//        } finally {
+//            Conexao.close(connL, ps);
+//        }
     }
     
     public Clientes procurar(int ID_Cli) {
@@ -151,8 +164,9 @@ public class BDClientes {
                 long CPF = rs.getLong("CPF");
                 Date dataNasc = rs.getDate("dataNasc");
                 String login = rs.getString("ClienteLogin");
+                int ativo = rs.getInt("ativo");
                 
-                clientes = new Clientes(id_cliente, nome, CPF, login, dataNasc);
+                clientes = new Clientes(id_cliente, nome, CPF, login, dataNasc, ativo);
             }
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Erro ao procurar o cliente " + sqle);

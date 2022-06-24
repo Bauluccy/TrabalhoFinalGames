@@ -8,6 +8,7 @@ import java.util.Calendar;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 import java.sql.Time;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -161,22 +162,28 @@ public class CadastrarJogos extends javax.swing.JFrame {
     private void botaoOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoOkMouseClicked
 
         Jogos jogos = new Jogos();
-        BDJogos BDJ = new BDJogos();
         try{
+            if(textCadJogo.getText().equals("") || textCadValor.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Insira todos os campos! ");
+            }else{
+                jogos.setID_Jogo(jogos.getID_Jogo());
+                jogos.setNomeJogo(textCadJogo.getText());
+                jogos.setGenero(comboCadGenero.getSelectedItem().toString());
+    
+                jogos.setValor(Double.parseDouble(textCadValor.getText()));
+                jogos.setAtivo(1);
+                
+                JOptionPane.showMessageDialog(rootPane, "Inserido com sucesso!");
+                BDJogos BDEXE = new BDJogos();
+                BDEXE.inserir(jogos);
+                dispose();
+            }
 
-            jogos.setID_Jogo(jogos.getID_Jogo());
-            jogos.setNomeJogo(textCadJogo.getText());
-            jogos.setGenero(comboCadGenero.getSelectedItem().toString());
-
-            jogos.setValor(Double.parseDouble(textCadValor.getText()));
-            JOptionPane.showMessageDialog(rootPane, "Inserido com sucesso!");
         }catch(Exception ex){
-            System.out.println("Erro ao inserir o jogo: " + ex);
+            JOptionPane.showMessageDialog(null,"Insira todos os campos!!! ");
         }
 
-        BDJogos BDEXE = new BDJogos();
-        BDEXE.inserir(jogos);
-        dispose();
+        
 
     }//GEN-LAST:event_botaoOkMouseClicked
 
@@ -220,12 +227,30 @@ public class CadastrarJogos extends javax.swing.JFrame {
     public void carregarCombos(){
         //START COMBOS
         //Carregar combo
-        String[] generos = {"RPG", "FPS", "Looter Shooter", "Survival", "Rogue Like", "Hack'n Slash"};
+        List<String> generos = new ArrayList<String>();
+        generos.add("RPG");
+        generos.add("FPS");
+        generos.add("Looter Shooter");
+        generos.add("Survival");
+        generos.add("Rogue Like");
+        generos.add("Hack'n Slash");
+        generos.add("Mundo Aberto");
+        generos.add("Puzzle");
+        generos.add("Esporte");
+        generos.add("Estratégia");
+        generos.add("Terror");
+        
+//                {"RPG", "FPS", "Looter Shooter", "Survival", "Rogue Like", "Hack'n Slash"};
+        
         try {
+            generos.add("RPG");
             comboCadGenero.removeAllItems();
             BDJogos BDJ = new BDJogos();
-            
-            comboCadGenero.setModel(new DefaultComboBoxModel<String>(generos));
+            for(int i = 0; i < generos.size() -1; i++){
+             comboCadGenero.addItem(generos.get(i));
+                
+            }
+//            comboCadGenero.setModel(new DefaultComboBoxModel<String>(generos));
         } catch (Exception ex) {
             System.out.println("Erro ao listar jogos" + ex);
         }

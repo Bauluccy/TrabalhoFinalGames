@@ -127,6 +127,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jMenu1.setMnemonic('o');
         jMenu1.setText("Opções");
 
         MenuClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
@@ -210,18 +211,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
          
         
         if ((evt.getButton() == MouseEvent.BUTTON3)) { // Clique Direito
-//               indexRow = Tabela.getSelectedRow();
-            int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
+            indexRow = Tabela.getSelectedRow();
+            ID_Index = Tabela.getValueAt(indexRow, 0).toString();
+            int indexID = Integer.parseInt(ID_Index);
+            int ativo; 
+            int simNao = JOptionPane.showConfirmDialog(null, "Deseja excluir este historico?");
             
+            if(simNao == 0){
                 try {
+                    ativo = 0;
                     BDHistorico bdh = new BDHistorico();
 //                    HistoricoDeCompras historico = new HistoricoDeCompras();
-                    bdh.excluir(codigo);
+                    bdh.excluir(indexID,ativo);
                     carregaTable();
-                    JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso!!!:"+ codigo);
+                    JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso!!!:"+ indexID);
                 } catch (Exception ex) {
                     System.out.println("problema");
                 }
+                
+            }
         }
     }//GEN-LAST:event_TabelaMouseClicked
 
@@ -309,25 +317,30 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
         
         for(int i = 0; i < historicoJoin.size(); i++){
-            ID_Historico = historicoJoin.get(i).getID_Historico();
-            String ID_HisString = Integer.toString(ID_Historico);
-            
-            DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
-            String dataFormatada = dtOutput.format(historicoJoin.get(i).getData());
-            
-            DateFormat hrOutput = new SimpleDateFormat("HH:mm");
-            String horaFormatada = hrOutput.format(historicoJoin.get(i).getHora());
-            
-            nomeCliente = historicoJoin.get(i).getNomeCliente();
-            nomeJogo = historicoJoin.get(i).getNomeJogo();
-            quantidade = historicoJoin.get(i).getQuantidade();
-            String quantidadeString = Integer.toString(quantidade);
-            
-            tipoPagamento = historicoJoin.get(i).getTipoPagamento();
-            valorTotal = historicoJoin.get(i).getValorTotal();
-            String valorTotalString = Double.toString(valorTotal);
-            
-            table.addRow(new String[]{ID_HisString,dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
+            int ativo = historicoJoin.get(i).getAtivo();
+            if(ativo == 1){
+                ID_Historico = historicoJoin.get(i).getID_Historico();
+                String ID_HisString = Integer.toString(ID_Historico);
+                
+                DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
+                String dataFormatada = dtOutput.format(historicoJoin.get(i).getData());
+                
+                DateFormat hrOutput = new SimpleDateFormat("HH:mm");
+                String horaFormatada = hrOutput.format(historicoJoin.get(i).getHora());
+                
+                nomeCliente = historicoJoin.get(i).getNomeCliente();
+                nomeJogo = historicoJoin.get(i).getNomeJogo();
+                quantidade = historicoJoin.get(i).getQuantidade();
+                String quantidadeString = Integer.toString(quantidade);
+                
+                tipoPagamento = historicoJoin.get(i).getTipoPagamento();
+                valorTotal = historicoJoin.get(i).getValorTotal();
+                String valorTotalString = Double.toString(valorTotal);
+                
+                table.addRow(new String[]{ID_HisString,dataFormatada,horaFormatada,nomeCliente,nomeJogo,quantidadeString,tipoPagamento, valorTotalString});
+            }else{
+                
+            }
         }
     }
 

@@ -8,16 +8,18 @@ public class Clientes {
     long CPF;
     String clienteLogin;
     Date dataNasc;
+    int ativo;
 
     public Clientes() {
     }
 
-    public Clientes(int ID_Cliente, String nomeCliente, long CPF, String clienteLogin, Date dataNasc) {
+    public Clientes(int ID_Cliente, String nomeCliente, long CPF, String clienteLogin, Date dataNasc, int ativo) {
         this.ID_Cliente = ID_Cliente;
         this.nomeCliente = nomeCliente;
         this.CPF = CPF;
         this.clienteLogin = clienteLogin;
         this.dataNasc = dataNasc;
+        this.ativo = ativo;
     }
 
     public int getID_Cliente() {
@@ -58,6 +60,14 @@ public class Clientes {
 
     public void setDataNasc(Date dataNasc) {
         this.dataNasc = dataNasc;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
     }
     
     

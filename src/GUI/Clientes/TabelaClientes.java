@@ -199,18 +199,24 @@ public class TabelaClientes extends javax.swing.JFrame {
          
         
         if ((evt.getButton() == MouseEvent.BUTTON3)) { // Clique Direito
-//               indexRow = Tabela.getSelectedRow();
-            int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
+            indexRow = Tabela.getSelectedRow();
+            ID_Index = Tabela.getValueAt(indexRow, 0).toString();
+            int indexID = Integer.parseInt(ID_Index);
+            int ativo; 
+            int simNao = JOptionPane.showConfirmDialog(null, "Deseja excluir este jogo?");
             
+            if(simNao == 0){
                 try {
+                    ativo = 0;
                     BDClientes bdc = new BDClientes();
 //                    HistoricoDeCompras historico = new HistoricoDeCompras();
-                    bdc.excluir(codigo);
+                    bdc.excluir(indexID, ativo);
                     carregaTable();
-                    JOptionPane.showMessageDialog(rootPane, "Cliente excluido com sucesso!!!:"+ codigo);
+                    JOptionPane.showMessageDialog(rootPane, "Cliente excluido com sucesso!!!:"+ indexID);
                 } catch (Exception ex) {
                     System.out.println("Problema ao excluir cliente!: " + ex);
                 }
+            }
         }
     }//GEN-LAST:event_TabelaMouseClicked
 
@@ -296,19 +302,24 @@ public class TabelaClientes extends javax.swing.JFrame {
         
         
         for(int i = 0; i < listaClientes.size(); i++){
-            ID_Cliente = listaClientes.get(i).getID_Cliente();
-            String ID_CliString = Integer.toString(ID_Cliente);
-            
-            DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
-            String dataFormatada = dtOutput.format(listaClientes.get(i).getDataNasc());
-            
-            nomeCliente = listaClientes.get(i).getNomeCliente();
-            loginCliente = listaClientes.get(i).getClienteLogin();
-            
-            CPF = listaClientes.get(i).getCPF();
-            String cpfString = Long.toString(CPF);
-            
-            table.addRow(new String[]{ID_CliString,nomeCliente,cpfString,loginCliente, dataFormatada});
+            int ativo = listaClientes.get(i).getAtivo();
+            if(ativo == 1){
+                ID_Cliente = listaClientes.get(i).getID_Cliente();
+                String ID_CliString = Integer.toString(ID_Cliente);
+                
+                DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
+                String dataFormatada = dtOutput.format(listaClientes.get(i).getDataNasc());
+                
+                nomeCliente = listaClientes.get(i).getNomeCliente();
+                loginCliente = listaClientes.get(i).getClienteLogin();
+                
+                CPF = listaClientes.get(i).getCPF();
+                String cpfString = Long.toString(CPF);
+                
+                table.addRow(new String[]{ID_CliString,nomeCliente,cpfString,loginCliente, dataFormatada});
+            }else{
+                
+            }
         }
     }
 

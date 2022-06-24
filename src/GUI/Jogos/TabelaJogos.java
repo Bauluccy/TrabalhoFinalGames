@@ -2,6 +2,8 @@ package GUI.Jogos;
 
 import Class.Jogos;
 import Dados.BDJogos;
+import GUI.Clientes.TabelaClientes;
+import GUI.Historico.TelaPrincipal;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -53,8 +55,8 @@ public class TabelaJogos extends javax.swing.JFrame {
         botaoSair = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        MenuClientes = new javax.swing.JMenuItem();
+        MenuHistorico = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tabela de Jogos");
@@ -118,13 +120,23 @@ public class TabelaJogos extends javax.swing.JFrame {
 
         jMenu1.setText("Opções");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem1.setText("Clientes");
-        jMenu1.add(jMenuItem1);
+        MenuClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        MenuClientes.setText("Clientes");
+        MenuClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuClientesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MenuClientes);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem2.setText("Games");
-        jMenu1.add(jMenuItem2);
+        MenuHistorico.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        MenuHistorico.setText("Historico");
+        MenuHistorico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuHistoricoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MenuHistorico);
 
         jMenuBar1.add(jMenu1);
 
@@ -136,7 +148,7 @@ public class TabelaJogos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(442, 442, 442)
+                .addGap(440, 440, 440)
                 .addComponent(botaoAdicionar)
                 .addGap(12, 12, 12)
                 .addComponent(botaoSair, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -157,7 +169,7 @@ public class TabelaJogos extends javax.swing.JFrame {
         
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        carregaTable();
+//        carregaTable();
     }//GEN-LAST:event_formWindowOpened
 
     private void botaoSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoSairMouseClicked
@@ -183,23 +195,46 @@ public class TabelaJogos extends javax.swing.JFrame {
         
          
         
-        if ((evt.getButton() == MouseEvent.BUTTON3)) { // Clique Direito
-            int codigo = Integer.parseInt(ID_Index = Tabela.getValueAt(indexRow, 0).toString());
+        if ((evt.getButton() == MouseEvent.BUTTON3)) { // Botão Direito
+            indexRow = Tabela.getSelectedRow();
+            ID_Index = Tabela.getValueAt(indexRow, 0).toString();
+            int indexID = Integer.parseInt(ID_Index);
+            int ativo; 
+            int simNao = JOptionPane.showConfirmDialog(null, "Deseja excluir este jogo?");
             
+            if(simNao == 0)
                 try {
+                    ativo = 0; 
                     BDJogos bdh = new BDJogos();
-                    bdh.excluir(codigo);
+                    bdh.excluir(indexID,ativo);
                     carregaTable();
-                    JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso!!!:"+ codigo);
+                    JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso!!!:"+ indexID);
                 } catch (Exception ex) {
-                    System.out.println("problema");
+                    System.out.println("Problema ao tentar excluir" + ex);
                 }
+            else{
+                dispose();
+            }
         }
     }//GEN-LAST:event_TabelaMouseClicked
 
     private void TabelaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaMouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_TabelaMouseExited
+
+    private void MenuClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuClientesActionPerformed
+        TabelaClientes tabelaClientes = new TabelaClientes();
+        tabelaClientes.setLocationRelativeTo(rootPane);
+        tabelaClientes.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuClientesActionPerformed
+
+    private void MenuHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuHistoricoActionPerformed
+        TelaPrincipal tabelaHistorico = new TelaPrincipal();
+        tabelaHistorico.setLocationRelativeTo(rootPane);
+        tabelaHistorico.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuHistoricoActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -264,6 +299,9 @@ public class TabelaJogos extends javax.swing.JFrame {
         
         
         for(int i = 0; i < listaJogos.size(); i++){
+            int ativo = listaJogos.get(i).getAtivo();
+            if(ativo == 1){
+                
             ID_Jogo = listaJogos.get(i).getID_Jogo();
             String ID_JogoString = Integer.toString(ID_Jogo);
             
@@ -274,17 +312,20 @@ public class TabelaJogos extends javax.swing.JFrame {
             String valorUnidadeString = Double.toString(valorUnidade);
             
             table.addRow(new String[]{ID_JogoString,titulo,genero,valorUnidadeString});
+            }else{
+                
+            }
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MenuClientes;
+    private javax.swing.JMenuItem MenuHistorico;
     public javax.swing.JTable Tabela;
     private javax.swing.JButton botaoAdicionar;
     private javax.swing.JButton botaoSair;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -48,7 +48,9 @@ public class BDHistorico {
                 Time hora = rs.getTime("hora");
                 String tipoPagamento = rs.getString("tipoPagamento");
                 double valorTotal = rs.getDouble("valorTotal");
-                agendaHistoricos.add(new HistoricoDeCompras(ID_historico,id_cliente,id_jogo,quantidade,data,hora,tipoPagamento,valorTotal));
+                int ativo = rs.getInt("ativo");
+                
+                agendaHistoricos.add(new HistoricoDeCompras(ID_historico,id_cliente,id_jogo,quantidade,data,hora,tipoPagamento,valorTotal, ativo));
             }
 
         } catch (SQLException sqle) {
@@ -98,8 +100,8 @@ public class BDHistorico {
             JOptionPane.showMessageDialog(null, "O objeto historico não pode ser nulo.");
         }
         try {
-            String SQL = "INSERT INTO historico (id_cliente, id_jogo, data, hora, quantidade, tipoPagamento, valorTotal) "
-                    + "values (?,?,?,?,?,?,?)";
+            String SQL = "INSERT INTO historico (id_cliente, id_jogo, data, hora, quantidade, tipoPagamento, valorTotal, ativo) "
+                    + "values (?,?,?,?,?,?,?,?)";
 
             connL = this.conn;
             ps = connL.prepareStatement(SQL);
@@ -114,6 +116,7 @@ public class BDHistorico {
             ps.setInt(5, historico.getQuantidade());
             ps.setString(6, historico.getTipoPagamento());
             ps.setDouble(7, historico.getValorTotal());
+            ps.setInt(8, historico.getAtivo());
             ps.executeUpdate();
 
         } catch (SQLException sqle) {
@@ -156,24 +159,36 @@ public class BDHistorico {
     }
     
     
-    public void excluir(int id) {
+    public void excluir(int id, int ativo) {
         PreparedStatement ps = null;
         Connection connL = null;
         if (id == 0) {
             JOptionPane.showMessageDialog(null, "O campo historico não pode ser nulo.");
         }
-        try {
-            String SQL = "DELETE FROM historico WHERE ID_Historico=?";
+        
+        try{
+            String SQL = "UPDATE historico set ativo=? WHERE ID_Historico=?";
             connL = this.conn;
             
             ps = connL.prepareStatement(SQL);
-            ps.setInt(1, id);
+            ps.setInt(1, ativo);
+            ps.setInt(2, id);
             ps.executeUpdate();
-        } catch (SQLException sqle) {
-            JOptionPane.showMessageDialog(null, "Erro ao excluir historico " + sqle);
-        } finally {
-            Conexao.close(connL, ps);
+        }catch(SQLException sqle){
+            
         }
+//        try {
+//            String SQL = "DELETE FROM historico WHERE ID_Historico=?";
+//            connL = this.conn;
+//            
+//            ps = connL.prepareStatement(SQL);
+//            ps.setInt(1, id);
+//            ps.executeUpdate();
+//        } catch (SQLException sqle) {
+//            JOptionPane.showMessageDialog(null, "Erro ao excluir historico " + sqle);
+//        } finally {
+//            Conexao.close(connL, ps);
+//        }
     }
     
     public HistoricoDeCompras procurarJoins(int ID_His) {
@@ -197,8 +212,9 @@ public class BDHistorico {
                 int qnt = rs.getInt("quantidade");
                 String tipoPagamento = rs.getString("tipoPagamento");
                 double total = rs.getDouble("valorTotal");
+                int ativo = rs.getInt("ativo");
                 
-                historico = new HistoricoDeCompras(ID_historico, id_cliente, id_jogo, qnt, data,hora , tipoPagamento, total);
+                historico = new HistoricoDeCompras(ID_historico, id_cliente, id_jogo, qnt, data,hora , tipoPagamento, total, ativo);
             }
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Erro ao procurar o historico " + sqle);

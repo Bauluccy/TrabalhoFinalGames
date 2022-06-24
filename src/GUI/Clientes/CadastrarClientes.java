@@ -8,6 +8,7 @@ import java.util.Calendar;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 import java.sql.Time;
+import javax.swing.JOptionPane;
 
 public class CadastrarClientes extends javax.swing.JFrame {
     ArrayList<Clientes> listaCliente = new ArrayList<Clientes>();
@@ -179,19 +180,26 @@ public class CadastrarClientes extends javax.swing.JFrame {
             Clientes clientes = new Clientes();
             BDClientes bdclientes = new BDClientes();
         try{
-            clientes.setNomeCliente(textNome.getText().toString());
-            clientes.setCPF(Long.parseLong(textCPF.getText().toString()));
-            
-            Calendar dataSelecionada = dateChooser.getSelectedDate();
-            java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
-            clientes.setDataNasc(dataSQL);
-            clientes.setClienteLogin(textLogin.getText().toString());
+            if(textNome.getText().equals("") || textCPF.getText().equals("") || dateChooser.getSelectedDate().equals("") || textLogin.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Insira todos os campos! ");
+            }else{
+                clientes.setNomeCliente(textNome.getText());
+                clientes.setCPF(Long.parseLong(textCPF.getText()));
+                
+                Calendar dataSelecionada = dateChooser.getSelectedDate();
+                java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
+                clientes.setDataNasc(dataSQL);
+               
+                clientes.setClienteLogin(textLogin.getText());
+                    
+                clientes.setAtivo(1);
+                bdclientes.inserir(clientes);
+                dispose();
+                JOptionPane.showMessageDialog(rootPane,"Inserido com sucesso!");
+            }
         }catch(Exception ex){
-            System.out.println("Erro ao inserir: " + ex);
+            JOptionPane.showMessageDialog(null,"Erro ao cadastrar novo cliente: " + ex);
         }
-        
-        bdclientes.inserir(clientes);
-        dispose();
     }//GEN-LAST:event_botaoOkMouseClicked
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained

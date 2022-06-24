@@ -15,6 +15,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 import java.sql.Time;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 public class CadastrarHistorico extends javax.swing.JFrame {
     ArrayList<Joins> listaJoins = new ArrayList<Joins>();
@@ -214,50 +215,51 @@ public class CadastrarHistorico extends javax.swing.JFrame {
 
     private void botaoOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoOkMouseClicked
             
-            
             HistoricoDeCompras historico = new HistoricoDeCompras();
-            Jogos jogos = new Jogos();
-            BDHistorico BDH = new BDHistorico();
         try{
-            
-            historico.setID_Cliente(comboCliente.getSelectedIndex()+1);
-            historico.setID_Jogo(comboJogo.getSelectedIndex()+1);
-            
-            Calendar dataSelecionada = dateChooser.getSelectedDate();
-            java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
-            historico.setData(dataSQL);
-            
-            
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            String horaSelecionada = timePickerHora.getText();
-                Time time = new Time(format.parse(horaSelecionada).getTime());
-                historico.setHora(time);
-            
+            if(dateChooser.getSelectedDate().equals("") || timePickerHora.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Preencha todos os campos! ");
                 
-            
+            }else{
+                historico.setID_Cliente(comboCliente.getSelectedIndex()+1);
+                historico.setID_Jogo(comboJogo.getSelectedIndex()+1);
+                
+                Calendar dataSelecionada = dateChooser.getSelectedDate();
+                java.sql.Date dataSQL = new java.sql.Date(dataSelecionada.getTimeInMillis());
+                historico.setData(dataSQL);
                 
                 
-            historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));
-            historico.setTipoPagamento(comboPagamento.getSelectedItem().toString());
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                String horaSelecionada = timePickerHora.getText();
+                    Time time = new Time(format.parse(horaSelecionada).getTime());
+                    historico.setHora(time);
+                
+                historico.setQuantidade(Integer.parseInt(comboQnt.getSelectedItem().toString()));
+                historico.setTipoPagamento(comboPagamento.getSelectedItem().toString());
+                
+                double valorJogosTotal;
+                
+                for(int i = comboJogo.getSelectedIndex(); i <= comboJogo.getSelectedIndex(); i++)
+                { 
+                    if(listaJogos.get(i).getAtivo() == 1){
+                        valorJogosTotal = listaJogos.get(i).getValor() * Double.parseDouble(comboQnt.getSelectedItem().toString());
+                        historico.setValorTotal(valorJogosTotal);
+                        
+                    }else{
+                        
+                    }
+                }
+                historico.setAtivo(1);
             
-            double valorJogosTotal;
-            
-            for(int i = comboJogo.getSelectedIndex(); i <= comboJogo.getSelectedIndex(); i++)
-            {                
-                valorJogosTotal = listaJogos.get(i).getValor() * Double.parseDouble(comboQnt.getSelectedItem().toString());
-                historico.setValorTotal(valorJogosTotal);
+                BDHistorico BDEXE = new BDHistorico();
+                BDEXE.inserir(historico);
+                dispose();
             }
             
-             
-                   
-            
         }catch(Exception ex){
-            System.out.println("Erro ao inserir: " + ex);
+            JOptionPane.showMessageDialog(null,"Insira todos os campos! ");
         }
         
-        BDHistorico BDEXE = new BDHistorico();
-        BDEXE.inserir(historico);
-        dispose();
         
     }//GEN-LAST:event_botaoOkMouseClicked
 
@@ -324,10 +326,14 @@ public class CadastrarHistorico extends javax.swing.JFrame {
         }
 
         for (int i = 0; i < listaJogos.size(); i++) {
-            comboJogo.addItem(listaJogos.get(i).getNomeJogo());
+            if(listaJogos.get(i).getAtivo() == 1){
+                comboJogo.addItem(listaJogos.get(i).getNomeJogo());
+            }else{
+                
+            }
         }
         
-        //Carregar combo Qquantidade
+        //Carregar combo Quantidade
         try {
             comboQnt.removeAllItems();
         } catch (Exception ex) {

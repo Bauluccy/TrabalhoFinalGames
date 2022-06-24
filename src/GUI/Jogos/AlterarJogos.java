@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -253,11 +254,26 @@ public class AlterarJogos extends javax.swing.JFrame {
     
     public void carregaCombos(){
         
-        String[] generos = {"RPG", "FPS", "Looter Shooter", "Survival", "Rogue Like", "Hack'n Slash"};
+//      String[] generos = {"RPG", "FPS", "Looter Shooter", "Survival", "Rogue Like", "Hack'n Slash"};
+        List<String> generos = new ArrayList<String>();
+        generos.add("RPG");
+        generos.add("FPS");
+        generos.add("Looter Shooter");
+        generos.add("Survival");
+        generos.add("Rogue Like");
+        generos.add("Hack'n Slash");
+        generos.add("Mundo Aberto");
+        generos.add("Puzzle");
+        generos.add("Esporte");
+        generos.add("Estratégia");
+        generos.add("Terror");
+        
         try {
             comboGenero.removeAllItems();
             BDJogos BDJ = new BDJogos();
-            comboGenero.setModel(new DefaultComboBoxModel<String>(generos));
+            for(int i = 0; i < generos.size() -1; i++){
+             comboGenero.addItem(generos.get(i));
+            }
             
         } catch (Exception ex) {
             System.out.println("Erro em carregar combo" + ex);
