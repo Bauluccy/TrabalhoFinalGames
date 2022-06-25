@@ -4,6 +4,7 @@ import Class.Clientes;
 import Dados.BDClientes;
 import GUI.Historico.TelaPrincipal;
 import GUI.Jogos.TabelaJogos;
+import GUI.Util.Configuracoes;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -60,9 +61,11 @@ public class TabelaClientes extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         MenuHistorico = new javax.swing.JMenuItem();
         MenuGames = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Historico de vendas");
+        setTitle("Tabela Clientes");
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -142,6 +145,19 @@ public class TabelaClientes extends javax.swing.JFrame {
         jMenu1.add(MenuGames);
 
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Ferramentas");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setText("Configurações");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -238,6 +254,12 @@ public class TabelaClientes extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_MenuGamesActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Configuracoes telaConfig = new Configuracoes();
+        telaConfig.setLocationRelativeTo(rootPane);
+        telaConfig.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -330,7 +352,9 @@ public class TabelaClientes extends javax.swing.JFrame {
     private javax.swing.JButton botaoAdicionar;
     private javax.swing.JButton botaoSair;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

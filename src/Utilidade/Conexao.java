@@ -1,5 +1,6 @@
 package Utilidade;
 
+import Class.Configuracao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,6 +10,17 @@ public class Conexao {
     
     public static Connection getConnection(){
         Connection conexao = null;
+        
+        Configuracao CF = new Configuracao();
+        CF = acessoArquivo.le();
+        String server = CF.getServer();
+        String porta = CF.getPorta();
+        String banco = CF.getBanco();
+        String usuario = CF.getUser();
+        String senha = CF.getPassword();
+
+        String dadosDoBanco="jdbc:mysql://"+server+":"+porta+"/"+banco;
+        
     	try
     	{
 	    	Class.forName("com.mysql.jdbc.Driver"); 
@@ -20,7 +32,7 @@ public class Conexao {
     	}
 
        try{
-           conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/games", "root", "1q2w3e4r5t");
+           conexao = DriverManager.getConnection(dadosDoBanco, usuario, senha);
            System.out.println("Conexão ok");
        }catch(Exception e){
           System.out.println(e.getMessage());

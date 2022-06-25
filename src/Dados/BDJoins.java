@@ -2,6 +2,7 @@ package Dados;
 
 import Class.HistoricoDeCompras;
 import Class.Joins;
+import GUI.Clientes.TabelaClientes;
 import Utilidade.Conexao;
 import java.sql.Connection;
 import java.sql.Date;
