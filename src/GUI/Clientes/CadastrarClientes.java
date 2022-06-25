@@ -15,7 +15,7 @@ public class CadastrarClientes extends javax.swing.JFrame {
 
     public CadastrarClientes() {
         initComponents();
-//        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")

@@ -25,7 +25,7 @@ public class CadastrarHistorico extends javax.swing.JFrame {
 
     public CadastrarHistorico() {
         initComponents();
-//        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")

@@ -17,7 +17,7 @@ public class CadastrarJogos extends javax.swing.JFrame {
 
     public CadastrarJogos() {
         initComponents();
-//        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     @SuppressWarnings("unchecked")
