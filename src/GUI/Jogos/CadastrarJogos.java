@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 public class CadastrarJogos extends javax.swing.JFrame {
     ArrayList<Jogos> listaJogos = new ArrayList<Jogos>();
+    //
 
     public CadastrarJogos() {
         initComponents();
